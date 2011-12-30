@@ -1,0 +1,392 @@
+%name-prefix "glfx"
+%output "glfxLALRParser.cpp"
+
+%{
+    #include <iostream>
+    #include <map>
+    #include <string>
+    #include <vector>
+    #include <sstream>
+    
+    #include "glfxParser.h"
+    #include "glfxClasses.h"
+
+    using namespace std;
+    using namespace glfxParser;
+    
+    #ifdef _MSC_VER
+    // MS's C++ compiler is more strict than gcc
+    
+    // bison related
+    // Disable the warning about default being present but no other cases in switch
+    #pragma warning( disable:4065 )
+
+    // No unistd.h (for flex)
+    #define YY_NO_UNISTD_H
+    
+    #endif
+    #include "glfxScanner.h"
+
+    static void errSyn();
+    static void errSem(const string& str, int line=-1);
+%}
+
+%token 	SHADER PROGRAM INTERFACE IDENTIFIER STORAGEQ STORAGET SHADER_TYPE
+%token	LP RP LB RB SC COMMA COLON EQUALS NUM INCLUDE SAMPLER FLOAT EMPTY_ARRAY_BRACKETS
+
+%%
+
+prog : prog tok
+    | { // Initialization code
+    gEffect->m_sharedCode.str("");    // clear the stream
+    gEffect->m_sharedCode<<"#line "<<glfxget_lineno()<<endl;
+    gLexPassthrough=true;
+}
+;
+
+tok : INTERFACE lex_fx IDENTIFIER read_block SC lex_passthrough {
+    gEffect->m_interfaces[$3.strs[0]]=Effect::InterfaceDcl($4.strs[0], $1.lineno);
+}
+    | SHADER lex_fx IDENTIFIER LP param_list RP read_block lex_passthrough {
+    ostringstream shaderCode;
+    // Add shader parameters
+    for(vector<YYSTYPE::variable>::const_iterator it=$5.vars->begin();it!=$5.vars->end();++it) {
+        string type(it->type);
+        map<string, Effect::InterfaceDcl>::const_iterator varType=gEffect->m_interfaces.find(type);
+        int lineno;
+        if(varType!=gEffect->m_interfaces.end()) {
+            type+=varType->second.id;
+            lineno=varType->second.atLine;
+        }
+        else
+            lineno=$1.lineno;
+        shaderCode<<"#line "<<lineno<<endl;
+        shaderCode<<it->prepend<<' '<<type<<' '<<it->identifier<<';'<<endl;
+    }
+    delete $5.vars;
+    
+    // Add definition and code
+    shaderCode<<"void main()"<<endl<<"#line "<<$7.lineno<<endl<<$7.strs[0];
+    gEffect->m_shaders[$3.strs[0]]=shaderCode.str();
+}
+    | PROGRAM lex_fx IDENTIFIER LB prog_def RB SC lex_passthrough {
+    gEffect->m_programs[$3.strs[0]]=$5.prog;
+}
+    | INCLUDE {
+    FILE* includeF;
+    string fName(gEffect->Dir());
+    fName+=$1.strs[0];
+    fopen_s(&includeF, fName.c_str(), "rb");
+    if(!includeF)
+        errSem("Cannot open include file", $1.lineno);
+    fseek(includeF, 0, SEEK_END);
+    int size=ftell(includeF)+1;
+    unsigned char* includeStr=new unsigned char[size];
+    rewind(includeF);
+    fread(includeStr, 1, size, includeF);
+    includeStr[size-1]=0;
+    
+    gEffect->m_includes++;
+    gEffect->m_sharedCode<<"#line 1 "<<gEffect->m_includes<<endl;
+    gEffect->m_sharedCode<<includeStr<<endl;
+    gEffect->m_sharedCode<<"#line "<<$1.lineno+1<<" 0"<<endl;
+    
+    fclose(includeF);
+    delete[] includeStr;
+}
+    | SAMPLER lex_fx samplerClass LB samplerParamList RB samplerVars SC lex_passthrough {
+    $5.samp->SetParam("Type", $1.strs[0]);
+    string dcl=$5.samp->Descriptor();
+    if(dcl.size() == 0)
+        errSem("No sampler declaration can be generated", $1.lineno);
+    if($3.strs[0].size()>0)
+        gEffect->m_samplers[$3.strs[0]]=new Sampler(*$5.samp);
+    for(vector<YYSTYPE::samplerVar>::const_iterator it=$7.texNames->begin(); it!=$7.texNames->end(); ++it) {
+        gEffect->m_sharedCode<<"#line "<<$1.lineno<<endl;
+        gEffect->m_sharedCode<<it->binding<<" uniform "<<dcl<<' '<<it->name<<';'<<endl;
+        gEffect->m_samplers[it->name]=new Sampler(*$5.samp);
+    }
+    delete $5.samp;
+    delete $7.texNames;
+    gEffect->m_sharedCode<<"#line "<<glfxget_lineno()<<endl;
+}
+;
+
+lex_fx : { /* Switch lex to fx scanning */
+    gLexPassthrough=false;
+}
+;
+
+lex_passthrough : { /* Switch lex to passthrough mode */
+    gLexPassthrough=true;
+    gEffect->m_sharedCode<<"#line "<<glfxget_lineno()<<endl;
+}
+;
+
+read_block : { /* Read next block */
+    $$.lineno=glfxget_lineno();
+    $$.strs[0]=glfxreadblock('{', '}');
+}
+;
+
+samplerClass : IDENTIFIER {
+    $$.strs[0]=$1.strs[0];
+}
+    | {
+    $$.strs[0]="";
+}
+;
+
+samplerVars : samplerVars COMMA samplerVar {
+    $$.texNames=$1.texNames;
+    
+    YYSTYPE::samplerVar sv;
+    sv.binding=$3.strs[0];
+    sv.name=$3.strs[1];
+    $$.texNames->push_back(sv);
+}
+    | samplerVar {
+    $$.texNames=new vector<YYSTYPE::samplerVar>;
+    YYSTYPE::samplerVar sv;
+    sv.binding=$1.strs[0];
+    sv.name=$1.strs[1];
+    $$.texNames->push_back(sv);
+}
+;
+
+samplerVar : IDENTIFIER location {
+    ostringstream prepend;
+    switch($2.rType) {
+    case REGISTER_INT:
+        prepend<<"layout(binding="<<$2.num<<") ";
+        break;
+    case REGISTER_NAME:
+        prepend<<"layout(binding="<<$2.strs[0]<<") ";
+        break;
+    }
+    
+    $$.strs[0]=prepend.str();
+    $$.strs[1]=$1.strs[0];
+}
+;
+    
+
+samplerParamList : samplerParamList samplerParam SC {
+    $$.samp=$1.samp;
+    switch($2.samplerParamType) {
+    case SAMPLER_PARAM_STRING:
+        $$.samp->SetParam($2.strs[0], $2.strs[1]);
+        break;
+    case SAMPLER_PARAM_INT:
+        $$.samp->SetParam($2.strs[0], $2.unum);
+        break;
+    case SAMPLER_PARAM_FLOAT:
+        $$.samp->SetParam($2.strs[0], $2.fnum);
+        break;
+    }
+}
+    | samplerParam SC {
+    $$.samp=new Sampler();
+    switch($1.samplerParamType) {
+    case SAMPLER_PARAM_STRING:
+        $$.samp->SetParam($1.strs[0], $1.strs[1]);
+        break;
+    case SAMPLER_PARAM_INT:
+        $$.samp->SetParam($1.strs[0], $1.unum);
+        break;
+    case SAMPLER_PARAM_FLOAT:
+        $$.samp->SetParam($1.strs[0], $1.fnum);
+        break;
+    }
+}
+;
+
+samplerParam : IDENTIFIER EQUALS IDENTIFIER {
+    $$.strs[0]=$1.strs[0];
+    $$.strs[1]=$3.strs[0];
+    $$.samplerParamType=SAMPLER_PARAM_STRING;
+}
+    | IDENTIFIER EQUALS FLOAT {
+    $$.strs[0]=$1.strs[0];
+    $$.fnum=$3.fnum;
+    $$.samplerParamType=SAMPLER_PARAM_FLOAT;
+}
+    | IDENTIFIER EQUALS NUM {
+    $$.strs[0]=$1.strs[0];
+    $$.num=$3.num;
+    $$.samplerParamType=SAMPLER_PARAM_INT;
+}
+;
+
+param_list : param_list COMMA fullparam {
+    $$.vars=$1.vars;
+
+    YYSTYPE::variable var;
+    var.prepend=$3.strs[0];
+    var.type=$3.strs[1];
+    var.identifier=$3.strs[2];
+    
+    $$.vars->push_back(var);
+}
+    | fullparam {
+    YYSTYPE::variable var;
+    var.prepend=$1.strs[0];
+    var.type=$1.strs[1];
+    var.identifier=$1.strs[2];
+    
+    $$.vars = new vector<YYSTYPE::variable>;
+    $$.vars->push_back(var);
+}
+;
+
+fullparam : storage param arrayBrackets location {
+    ostringstream prepend;
+
+    switch($4.rType) {
+    case REGISTER_INT:
+        prepend<<"layout(location="<<$4.num<<") ";
+        break;
+    case REGISTER_NAME:
+        prepend<<"layout(location="<<$4.strs[0]<<") ";
+        break;
+    }
+    
+    prepend<<$1.strs[0]<<' '<<$2.strs[0];
+    $$.strs[0]=prepend.str();
+    $$.strs[1]=$2.strs[1];
+    $$.strs[2]=$2.strs[2];
+    $$.strs[2]+=$3.strs[0];
+}
+;
+
+storage : STORAGET {
+    $$.strs[0]=$1.strs[0];
+}
+    | { /* None */
+    $$.strs[0]="";
+}
+;
+
+param : STORAGEQ IDENTIFIER IDENTIFIER {
+    $$.strs[0]=$1.strs[0];
+    $$.strs[1]=$2.strs[0];
+    $$.strs[2]=$3.strs[0];
+}
+;
+
+arrayBrackets : EMPTY_ARRAY_BRACKETS {
+    $$.strs[0]="[]";
+}
+    | {
+    $$.strs[0]="";
+}
+;
+
+location : COLON NUM {
+    $$.num=$2.num;
+    $$.rType=REGISTER_INT;
+}
+    | COLON IDENTIFIER {
+    $$.strs[0]=$2.strs[0];
+    $$.rType=REGISTER_NAME;
+}
+    | {
+    $$.rType=REGISTER_NONE;
+}
+;
+
+prog_def : shaders_list {
+    $$.prog = new Program(*($1.shaders));
+    delete $1.shaders;
+}
+;
+
+shaders_list : shaders_list shader_def {
+    $$.shaders=$1.shaders;
+    (*$$.shaders)[$2.sType].src=$2.strs[0];
+    (*$$.shaders)[$2.sType].name=$2.strs[1];
+}
+    | shader_def {
+    $$.shaders=new map<ShaderType, Program::Shader>;
+    (*$$.shaders)[$1.sType].src=$1.strs[0];
+    (*$$.shaders)[$1.sType].name=$1.strs[1];
+}
+;
+
+shader_def : SHADER_TYPE LP NUM RP EQUALS IDENTIFIER LP RP shader_layout SC {
+    // Assemble the shader
+    ostringstream theShader;
+    
+    theShader<<"#version "<<$3.num<<endl;
+    theShader<<$9.strs[0];
+    theShader<<gEffect->m_sharedCode.str();
+    map<string, string>::const_iterator it=gEffect->m_shaders.find($6.strs[0]);
+    if(it==gEffect->m_shaders.end()) {
+        ostringstream errMsg;
+        errMsg<<"Unable to find referenced shader \""<<$6.strs[0]<<'\"';
+        errSem(errMsg.str(), $6.lineno);
+    }
+    
+    // Currently in case of error it never returns (throw)
+    // TODO: Handle continuation in case of error
+    theShader<<it->second;
+    $$.strs[0]=theShader.str();
+    $$.strs[1]=$6.strs[0];
+    $$.sType=$1.sType;
+}
+;
+
+shader_layout : COLON shader_layout_list {
+    $$.strs[0]=$2.strs[0];
+}
+    | {
+    $$.strs[0]="";
+}
+;
+
+shader_layout_list : shader_layout_list COMMA layout {
+    $$.strs[0]=$1.strs[0];
+    $$.strs[0]+=$3.strs[0];
+}
+    | layout {
+    $$.strs[0]=$1.strs[0];
+}
+;
+
+layout : STORAGEQ read_parenthesis {
+    ostringstream layoutDef;
+    layoutDef<<"#line "<<$1.lineno<<endl;
+    layoutDef<<"layout"<<$2.strs[0]<<' '<<$1.strs[0]<<';'<<endl;
+    $$.strs[0]=layoutDef.str();
+}
+;
+
+read_parenthesis : { /* read parenthesis */
+    $$.strs[0]=glfxreadblock('(', ')');
+}
+;
+
+%%
+
+void glfxerror(const char*)
+{
+    errSyn();
+}
+
+void errSyn()
+{
+    ostringstream errMsg;
+
+    errMsg<<"0("<<glfxget_lineno()<<") : error: Syntax error";
+    throw errMsg.str();
+}
+
+void errSem(const string& str, int line)
+{
+    ostringstream errMsg;
+    
+    if(line==-1)
+        line=glfxget_lineno();
+    errMsg<<"0("<<line<<") : error: "<<str;
+    throw errMsg.str();
+}

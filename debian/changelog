@@ -1,0 +1,17 @@
+libglfx (0.3-0ubuntu3) oneiric; urgency=low
+
+  * Update to revision r107 from glfx upstream.
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Wed, 28 Dec 2011 18:55:05 +0200
+
+libglfx (0.2-0ubuntu2) oneiric; urgency=low
+
+  * Update to revision r91 from glfx upstream.
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Sun, 11 Dec 2011 12:54:23 +0200
+
+libglfx (0.1-0ubuntu1) oneiric; urgency=low
+
+  * Initial release
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Sun, 23 Oct 2011 00:00:00 +0200

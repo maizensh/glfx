@@ -1,0 +1,14 @@
+Source: libglfx
+Section: graphics
+Priority: extra
+Maintainer: Etay Meiri <etay.meiri@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), autotools-dev, bison (>= 2.4.1), flex (>=2.5.35), libglew1.6-dev (>=1.6.0-3), libglew1.6 (>=1.6.0-3), freeglut3-dev (>=2.6.0-1ubuntu2)
+Standards-Version: 3.9.2
+Homepage: http://code.google.com/p/jenova/ 
+
+Package: libglfx
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libglew1.6 (>=1.6.0-3), freeglut3 (>=2.6.0-1ubuntu2)
+Description: OpenGL effects library
+ An effect library for OpenGL. Enables encapsulation of all OpenGL program 
+ shaders in a single file.
