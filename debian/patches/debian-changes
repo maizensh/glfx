@@ -1,0 +1,1471 @@
+Description: Undocumented upstream changes
+ This patch has been created by dpkg-source during the package build
+ but it might have accumulated changes from several uploads. Please
+ check the changelog to (hopefully) learn more on those changes.
+
+--- /dev/null
++++ libglfx-0.3/nbproject/Makefile-Release.mk
+@@ -0,0 +1,95 @@
++#
++# Generated Makefile - do not edit!
++#
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a -pre and a -post target defined where you can add customized code.
++#
++# This makefile implements configuration specific macros and targets.
++
++
++# Environment
++MKDIR=mkdir
++CP=cp
++GREP=grep
++NM=nm
++CCADMIN=CCadmin
++RANLIB=ranlib
++CC=gcc
++CCC=g++
++CXX=g++
++FC=gfortran
++AS=as
++
++# Macros
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Release
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++
++# Include project Makefile
++include glfx-Makefile.mk
++
++# Object Directory
++OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
++
++# Object Files
++OBJECTFILES= \
++	${OBJECTDIR}/src/glfx.o \
++	${OBJECTDIR}/src/glfxLALRParser.o \
++	${OBJECTDIR}/src/glfxScanner.o
++
++
++# C Compiler Flags
++CFLAGS=
++
++# CC Compiler Flags
++CCFLAGS=
++CXXFLAGS=
++
++# Fortran Compiler Flags
++FFLAGS=
++
++# Assembler Flags
++ASFLAGS=
++
++# Link Libraries and Options
++LDLIBSOPTIONS=
++
++# Build Targets
++.build-conf: ${BUILD_SUBPROJECTS}
++	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++
++${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so: ${OBJECTFILES}
++	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
++	${LINK.cc} -shared -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
++
++${OBJECTDIR}/src/glfx.o: nbproject/Makefile-${CND_CONF}.mk src/glfx.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -O2 -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfx.o src/glfx.cpp
++
++${OBJECTDIR}/src/glfxLALRParser.o: nbproject/Makefile-${CND_CONF}.mk src/glfxLALRParser.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -O2 -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfxLALRParser.o src/glfxLALRParser.cpp
++
++${OBJECTDIR}/src/glfxScanner.o: nbproject/Makefile-${CND_CONF}.mk src/glfxScanner.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -O2 -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfxScanner.o src/glfxScanner.cpp
++
++# Subprojects
++.build-subprojects:
++
++# Clean Targets
++.clean-conf: ${CLEAN_SUBPROJECTS}
++	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
++	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++
++# Subprojects
++.clean-subprojects:
++
++# Enable dependency checking
++.dep.inc: .depcheck-impl
++
++include .dep.inc
+--- /dev/null
++++ libglfx-0.3/nbproject/Package-Release.bash
+@@ -0,0 +1,75 @@
++#!/bin/bash -x
++
++#
++# Generated - do not edit!
++#
++
++# Macros
++TOP=`pwd`
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Release
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
++TMPDIRNAME=tmp-packaging
++OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++OUTPUT_BASENAME=libglfx.so
++PACKAGE_TOP_DIR=libglfx.so/
++
++# Functions
++function checkReturnCode
++{
++    rc=$?
++    if [ $rc != 0 ]
++    then
++        exit $rc
++    fi
++}
++function makeDirectory
++# $1 directory path
++# $2 permission (optional)
++{
++    mkdir -p "$1"
++    checkReturnCode
++    if [ "$2" != "" ]
++    then
++      chmod $2 "$1"
++      checkReturnCode
++    fi
++}
++function copyFileToTmpDir
++# $1 from-file path
++# $2 to-file path
++# $3 permission
++{
++    cp "$1" "$2"
++    checkReturnCode
++    if [ "$3" != "" ]
++    then
++        chmod $3 "$2"
++        checkReturnCode
++    fi
++}
++
++# Setup
++cd "${TOP}"
++mkdir -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package
++rm -rf ${NBTMPDIR}
++mkdir -p ${NBTMPDIR}
++
++# Copy files and create directories and links
++cd "${TOP}"
++makeDirectory "${NBTMPDIR}/libglfx.so/lib"
++copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}" 0644
++
++
++# Generate tar file
++cd "${TOP}"
++rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libglfx.so.tar
++cd ${NBTMPDIR}
++tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libglfx.so.tar *
++checkReturnCode
++
++# Cleanup
++cd "${TOP}"
++rm -rf ${NBTMPDIR}
+--- /dev/null
++++ libglfx-0.3/nbproject/Makefile-Debug.mk
+@@ -0,0 +1,95 @@
++#
++# Generated Makefile - do not edit!
++#
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a -pre and a -post target defined where you can add customized code.
++#
++# This makefile implements configuration specific macros and targets.
++
++
++# Environment
++MKDIR=mkdir
++CP=cp
++GREP=grep
++NM=nm
++CCADMIN=CCadmin
++RANLIB=ranlib
++CC=gcc
++CCC=g++
++CXX=g++
++FC=gfortran
++AS=as
++
++# Macros
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Debug
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++
++# Include project Makefile
++include glfx-Makefile.mk
++
++# Object Directory
++OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
++
++# Object Files
++OBJECTFILES= \
++	${OBJECTDIR}/src/glfx.o \
++	${OBJECTDIR}/src/glfxLALRParser.o \
++	${OBJECTDIR}/src/glfxScanner.o
++
++
++# C Compiler Flags
++CFLAGS=
++
++# CC Compiler Flags
++CCFLAGS=
++CXXFLAGS=
++
++# Fortran Compiler Flags
++FFLAGS=
++
++# Assembler Flags
++ASFLAGS=
++
++# Link Libraries and Options
++LDLIBSOPTIONS=
++
++# Build Targets
++.build-conf: ${BUILD_SUBPROJECTS}
++	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++
++${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so: ${OBJECTFILES}
++	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
++	${LINK.cc} -shared -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so -fPIC ${OBJECTFILES} ${LDLIBSOPTIONS} 
++
++${OBJECTDIR}/src/glfx.o: nbproject/Makefile-${CND_CONF}.mk src/glfx.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -g -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfx.o src/glfx.cpp
++
++${OBJECTDIR}/src/glfxLALRParser.o: nbproject/Makefile-${CND_CONF}.mk src/glfxLALRParser.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -g -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfxLALRParser.o src/glfxLALRParser.cpp
++
++${OBJECTDIR}/src/glfxScanner.o: nbproject/Makefile-${CND_CONF}.mk src/glfxScanner.cpp 
++	${MKDIR} -p ${OBJECTDIR}/src
++	${RM} $@.d
++	$(COMPILE.cc) -g -DLINUX -Iinclude -fPIC  -MMD -MP -MF $@.d -o ${OBJECTDIR}/src/glfxScanner.o src/glfxScanner.cpp
++
++# Subprojects
++.build-subprojects:
++
++# Clean Targets
++.clean-conf: ${CLEAN_SUBPROJECTS}
++	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
++	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++
++# Subprojects
++.clean-subprojects:
++
++# Enable dependency checking
++.dep.inc: .depcheck-impl
++
++include .dep.inc
+--- /dev/null
++++ libglfx-0.3/nbproject/configurations.xml
+@@ -0,0 +1,81 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<configurationDescriptor version="79">
++  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
++    <logicalFolder name="HeaderFiles"
++                   displayName="Header Files"
++                   projectFiles="true">
++      <itemPath>include/glfx.h</itemPath>
++      <itemPath>src/glfxClasses.h</itemPath>
++      <itemPath>src/glfxLALRParser.hpp</itemPath>
++      <itemPath>src/glfxParser.h</itemPath>
++      <itemPath>src/glfxScanner.h</itemPath>
++    </logicalFolder>
++    <logicalFolder name="ResourceFiles"
++                   displayName="Resource Files"
++                   projectFiles="true">
++    </logicalFolder>
++    <logicalFolder name="SourceFiles"
++                   displayName="Source Files"
++                   projectFiles="true">
++      <itemPath>src/glfx.cpp</itemPath>
++      <itemPath>src/glfxLALRParser.cpp</itemPath>
++      <itemPath>src/glfxScanner.cpp</itemPath>
++    </logicalFolder>
++    <logicalFolder name="TestFiles"
++                   displayName="Test Files"
++                   projectFiles="false"
++                   kind="TEST_LOGICAL_FOLDER">
++    </logicalFolder>
++    <logicalFolder name="ExternalFiles"
++                   displayName="Important Files"
++                   projectFiles="false"
++                   kind="IMPORTANT_FILES_FOLDER">
++      <itemPath>glfx-Makefile.mk</itemPath>
++    </logicalFolder>
++  </logicalFolder>
++  <projectmakefile>glfx-Makefile.mk</projectmakefile>
++  <confs>
++    <conf name="Debug" type="2">
++      <toolsSet>
++        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
++        <compilerSet>default</compilerSet>
++      </toolsSet>
++      <compileType>
++        <ccTool>
++          <incDir>
++            <pElem>include</pElem>
++          </incDir>
++          <preprocessorList>
++            <Elem>LINUX</Elem>
++          </preprocessorList>
++        </ccTool>
++      </compileType>
++    </conf>
++    <conf name="Release" type="2">
++      <toolsSet>
++        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
++        <compilerSet>default</compilerSet>
++      </toolsSet>
++      <compileType>
++        <cTool>
++          <developmentMode>5</developmentMode>
++        </cTool>
++        <ccTool>
++          <developmentMode>5</developmentMode>
++          <incDir>
++            <pElem>include</pElem>
++          </incDir>
++          <preprocessorList>
++            <Elem>LINUX</Elem>
++          </preprocessorList>
++        </ccTool>
++        <fortranCompilerTool>
++          <developmentMode>5</developmentMode>
++        </fortranCompilerTool>
++        <asmTool>
++          <developmentMode>5</developmentMode>
++        </asmTool>
++      </compileType>
++    </conf>
++  </confs>
++</configurationDescriptor>
+--- /dev/null
++++ libglfx-0.3/nbproject/Makefile-impl.mk
+@@ -0,0 +1,133 @@
++# 
++# Generated Makefile - do not edit! 
++# 
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a pre- and a post- target defined where you can add customization code.
++#
++# This makefile implements macros and targets common to all configurations.
++#
++# NOCDDL
++
++
++# Building and Cleaning subprojects are done by default, but can be controlled with the SUB
++# macro. If SUB=no, subprojects will not be built or cleaned. The following macro
++# statements set BUILD_SUB-CONF and CLEAN_SUB-CONF to .build-reqprojects-conf
++# and .clean-reqprojects-conf unless SUB has the value 'no'
++SUB_no=NO
++SUBPROJECTS=${SUB_${SUB}}
++BUILD_SUBPROJECTS_=.build-subprojects
++BUILD_SUBPROJECTS_NO=
++BUILD_SUBPROJECTS=${BUILD_SUBPROJECTS_${SUBPROJECTS}}
++CLEAN_SUBPROJECTS_=.clean-subprojects
++CLEAN_SUBPROJECTS_NO=
++CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
++
++
++# Project Name
++PROJECTNAME=glfx
++
++# Active Configuration
++DEFAULTCONF=Debug
++CONF=${DEFAULTCONF}
++
++# All Configurations
++ALLCONFS=Debug Release 
++
++
++# build
++.build-impl: .build-pre .validate-impl .depcheck-impl
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .build-conf
++
++
++# clean
++.clean-impl: .clean-pre .validate-impl .depcheck-impl
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf
++
++
++# clobber 
++.clobber-impl: .clobber-pre .depcheck-impl
++	@#echo "=> Running $@..."
++	for CONF in ${ALLCONFS}; \
++	do \
++	    "${MAKE}" -f nbproject/Makefile-$${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf; \
++	done
++
++# all 
++.all-impl: .all-pre .depcheck-impl
++	@#echo "=> Running $@..."
++	for CONF in ${ALLCONFS}; \
++	do \
++	    "${MAKE}" -f nbproject/Makefile-$${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .build-conf; \
++	done
++
++# build tests
++.build-tests-impl: .build-impl .build-tests-pre
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk SUBPROJECTS=${SUBPROJECTS} .build-tests-conf
++
++# run tests
++.test-impl: .build-tests-impl .test-pre
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk SUBPROJECTS=${SUBPROJECTS} .test-conf
++
++# dependency checking support
++.depcheck-impl:
++	@echo "# This code depends on make tool being used" >.dep.inc
++	@if [ -n "${MAKE_VERSION}" ]; then \
++	    echo "DEPFILES=\$$(wildcard \$$(addsuffix .d, \$${OBJECTFILES}))" >>.dep.inc; \
++	    echo "ifneq (\$${DEPFILES},)" >>.dep.inc; \
++	    echo "include \$${DEPFILES}" >>.dep.inc; \
++	    echo "endif" >>.dep.inc; \
++	else \
++	    echo ".KEEP_STATE:" >>.dep.inc; \
++	    echo ".KEEP_STATE_FILE:.make.state.\$${CONF}" >>.dep.inc; \
++	fi
++
++# configuration validation
++.validate-impl:
++	@if [ ! -f nbproject/Makefile-${CONF}.mk ]; \
++	then \
++	    echo ""; \
++	    echo "Error: can not find the makefile for configuration '${CONF}' in project ${PROJECTNAME}"; \
++	    echo "See 'make help' for details."; \
++	    echo "Current directory: " `pwd`; \
++	    echo ""; \
++	fi
++	@if [ ! -f nbproject/Makefile-${CONF}.mk ]; \
++	then \
++	    exit 1; \
++	fi
++
++
++# help
++.help-impl: .help-pre
++	@echo "This makefile supports the following configurations:"
++	@echo "    ${ALLCONFS}"
++	@echo ""
++	@echo "and the following targets:"
++	@echo "    build  (default target)"
++	@echo "    clean"
++	@echo "    clobber"
++	@echo "    all"
++	@echo "    help"
++	@echo ""
++	@echo "Makefile Usage:"
++	@echo "    make [CONF=<CONFIGURATION>] [SUB=no] build"
++	@echo "    make [CONF=<CONFIGURATION>] [SUB=no] clean"
++	@echo "    make [SUB=no] clobber"
++	@echo "    make [SUB=no] all"
++	@echo "    make help"
++	@echo ""
++	@echo "Target 'build' will build a specific configuration and, unless 'SUB=no',"
++	@echo "    also build subprojects."
++	@echo "Target 'clean' will clean a specific configuration and, unless 'SUB=no',"
++	@echo "    also clean subprojects."
++	@echo "Target 'clobber' will remove all built files from all configurations and,"
++	@echo "    unless 'SUB=no', also from subprojects."
++	@echo "Target 'all' will will build all configurations and, unless 'SUB=no',"
++	@echo "    also build subprojects."
++	@echo "Target 'help' prints this message."
++	@echo ""
++
+--- /dev/null
++++ libglfx-0.3/nbproject/Makefile-variables.mk
+@@ -0,0 +1,35 @@
++#
++# Generated - do not edit!
++#
++# NOCDDL
++#
++CND_BASEDIR=`pwd`
++CND_BUILDDIR=build
++CND_DISTDIR=dist
++# Debug configuration
++CND_PLATFORM_Debug=GNU-Linux-x86
++CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
++CND_ARTIFACT_NAME_Debug=libglfx.so
++CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/libglfx.so
++CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
++CND_PACKAGE_NAME_Debug=libglfx.so.tar
++CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/libglfx.so.tar
++# Release configuration
++CND_PLATFORM_Release=GNU-Linux-x86
++CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
++CND_ARTIFACT_NAME_Release=libglfx.so
++CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/libglfx.so
++CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
++CND_PACKAGE_NAME_Release=libglfx.so.tar
++CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/libglfx.so.tar
++#
++# include compiler specific variables
++#
++# dmake command
++ROOT:sh = test -f nbproject/private/Makefile-variables.mk || \
++	(mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk)
++#
++# gmake command
++.PHONY: $(shell test -f nbproject/private/Makefile-variables.mk || (mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk))
++#
++include nbproject/private/Makefile-variables.mk
+--- /dev/null
++++ libglfx-0.3/nbproject/Package-Debug.bash
+@@ -0,0 +1,75 @@
++#!/bin/bash -x
++
++#
++# Generated - do not edit!
++#
++
++# Macros
++TOP=`pwd`
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Debug
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
++TMPDIRNAME=tmp-packaging
++OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so
++OUTPUT_BASENAME=libglfx.so
++PACKAGE_TOP_DIR=libglfx.so/
++
++# Functions
++function checkReturnCode
++{
++    rc=$?
++    if [ $rc != 0 ]
++    then
++        exit $rc
++    fi
++}
++function makeDirectory
++# $1 directory path
++# $2 permission (optional)
++{
++    mkdir -p "$1"
++    checkReturnCode
++    if [ "$2" != "" ]
++    then
++      chmod $2 "$1"
++      checkReturnCode
++    fi
++}
++function copyFileToTmpDir
++# $1 from-file path
++# $2 to-file path
++# $3 permission
++{
++    cp "$1" "$2"
++    checkReturnCode
++    if [ "$3" != "" ]
++    then
++        chmod $3 "$2"
++        checkReturnCode
++    fi
++}
++
++# Setup
++cd "${TOP}"
++mkdir -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package
++rm -rf ${NBTMPDIR}
++mkdir -p ${NBTMPDIR}
++
++# Copy files and create directories and links
++cd "${TOP}"
++makeDirectory "${NBTMPDIR}/libglfx.so/lib"
++copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}lib/${OUTPUT_BASENAME}" 0644
++
++
++# Generate tar file
++cd "${TOP}"
++rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libglfx.so.tar
++cd ${NBTMPDIR}
++tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/libglfx.so.tar *
++checkReturnCode
++
++# Cleanup
++cd "${TOP}"
++rm -rf ${NBTMPDIR}
+--- /dev/null
++++ libglfx-0.3/nbproject/project.xml
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://www.netbeans.org/ns/project/1">
++    <type>org.netbeans.modules.cnd.makeproject</type>
++    <configuration>
++        <data xmlns="http://www.netbeans.org/ns/make-project/1">
++            <name>glfx</name>
++            <c-extensions/>
++            <cpp-extensions>cpp</cpp-extensions>
++            <header-extensions>h,hpp</header-extensions>
++            <sourceEncoding>UTF-8</sourceEncoding>
++            <make-dep-projects/>
++            <sourceRootList/>
++            <confList>
++                <confElem>
++                    <name>Debug</name>
++                    <type>2</type>
++                </confElem>
++                <confElem>
++                    <name>Release</name>
++                    <type>2</type>
++                </confElem>
++            </confList>
++        </data>
++    </configuration>
++</project>
+--- /dev/null
++++ libglfx-0.3/nbproject/private/private.xml
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
++    <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
++        <activeConfTypeElem>2</activeConfTypeElem>
++        <activeConfIndexElem>0</activeConfIndexElem>
++    </data>
++    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
++    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/1">
++        <file>file:/home/cl/hacking/graphics/opengl/jenova/tessdemo/glfx/src/glfx.cpp</file>
++        <file>file:/home/cl/hacking/graphics/opengl/jenova/tessdemo/glfx/include/glfx.h</file>
++        <file>file:/home/cl/hacking/graphics/opengl/jenova/tessdemo/glfx/src/glfxClasses.h</file>
++        <file>file:/home/cl/hacking/graphics/opengl/jenova/tessdemo/glfx/src/glfx.lpp</file>
++    </open-files>
++</project-private>
+--- /dev/null
++++ libglfx-0.3/nbproject/private/configurations.xml
+@@ -0,0 +1,78 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<configurationDescriptor version="79">
++  <projectmakefile>glfx-Makefile.mk</projectmakefile>
++  <confs>
++    <conf name="Debug" type="2">
++      <toolsSet>
++        <developmentServer>localhost</developmentServer>
++        <platform>2</platform>
++      </toolsSet>
++      <dbx_gdbdebugger version="1">
++        <gdb_pathmaps>
++        </gdb_pathmaps>
++        <gdb_interceptlist>
++          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
++        </gdb_interceptlist>
++        <gdb_options>
++          <DebugOptions>
++          </DebugOptions>
++        </gdb_options>
++        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
++      </dbx_gdbdebugger>
++      <gizmo_options version="3">
++        <configurationname>GizmoSimple</configurationname>
++      </gizmo_options>
++      <nativedebugger version="1">
++        <engine>gdb</engine>
++      </nativedebugger>
++      <runprofile version="9">
++        <runcommandpicklist>
++          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
++        </runcommandpicklist>
++        <runcommand>"${OUTPUT_PATH}"</runcommand>
++        <rundir></rundir>
++        <buildfirst>true</buildfirst>
++        <terminal-type>0</terminal-type>
++        <remove-instrumentation>0</remove-instrumentation>
++        <environment>
++        </environment>
++      </runprofile>
++    </conf>
++    <conf name="Release" type="2">
++      <toolsSet>
++        <developmentServer>localhost</developmentServer>
++        <platform>2</platform>
++      </toolsSet>
++      <dbx_gdbdebugger version="1">
++        <gdb_pathmaps>
++        </gdb_pathmaps>
++        <gdb_interceptlist>
++          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
++        </gdb_interceptlist>
++        <gdb_options>
++          <DebugOptions>
++          </DebugOptions>
++        </gdb_options>
++        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
++      </dbx_gdbdebugger>
++      <gizmo_options version="3">
++        <configurationname>GizmoSimple</configurationname>
++      </gizmo_options>
++      <nativedebugger version="1">
++        <engine>gdb</engine>
++      </nativedebugger>
++      <runprofile version="9">
++        <runcommandpicklist>
++          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
++        </runcommandpicklist>
++        <runcommand>"${OUTPUT_PATH}"</runcommand>
++        <rundir></rundir>
++        <buildfirst>true</buildfirst>
++        <terminal-type>0</terminal-type>
++        <remove-instrumentation>0</remove-instrumentation>
++        <environment>
++        </environment>
++      </runprofile>
++    </conf>
++  </confs>
++</configurationDescriptor>
+--- /dev/null
++++ libglfx-0.3/nbproject/private/Makefile-variables.mk
+@@ -0,0 +1,7 @@
++#
++# Generated - do not edit!
++#
++# NOCDDL
++#
++# Debug configuration
++# Release configuration
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Makefile-Release.mk
+@@ -0,0 +1,83 @@
++#
++# Generated Makefile - do not edit!
++#
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a -pre and a -post target defined where you can add customized code.
++#
++# This makefile implements configuration specific macros and targets.
++
++
++# Environment
++MKDIR=mkdir
++CP=cp
++GREP=grep
++NM=nm
++CCADMIN=CCadmin
++RANLIB=ranlib
++CC=gcc
++CCC=g++
++CXX=g++
++FC=gfortran
++AS=as
++
++# Macros
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Release
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++
++# Include project Makefile
++include Makefile
++
++# Object Directory
++OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
++
++# Object Files
++OBJECTFILES= \
++	${OBJECTDIR}/_ext/1360937237/glfxc.o
++
++
++# C Compiler Flags
++CFLAGS=
++
++# CC Compiler Flags
++CCFLAGS=
++CXXFLAGS=
++
++# Fortran Compiler Flags
++FFLAGS=
++
++# Assembler Flags
++ASFLAGS=
++
++# Link Libraries and Options
++LDLIBSOPTIONS=
++
++# Build Targets
++.build-conf: ${BUILD_SUBPROJECTS}
++	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++
++${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc: ${OBJECTFILES}
++	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
++	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc ${OBJECTFILES} ${LDLIBSOPTIONS} 
++
++${OBJECTDIR}/_ext/1360937237/glfxc.o: nbproject/Makefile-${CND_CONF}.mk ../src/glfxc.cpp 
++	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
++	${RM} $@.d
++	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/glfxc.o ../src/glfxc.cpp
++
++# Subprojects
++.build-subprojects:
++
++# Clean Targets
++.clean-conf: ${CLEAN_SUBPROJECTS}
++	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
++	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++
++# Subprojects
++.clean-subprojects:
++
++# Enable dependency checking
++.dep.inc: .depcheck-impl
++
++include .dep.inc
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Package-Release.bash
+@@ -0,0 +1,75 @@
++#!/bin/bash -x
++
++#
++# Generated - do not edit!
++#
++
++# Macros
++TOP=`pwd`
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Release
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
++TMPDIRNAME=tmp-packaging
++OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++OUTPUT_BASENAME=glfxc
++PACKAGE_TOP_DIR=glfxc/
++
++# Functions
++function checkReturnCode
++{
++    rc=$?
++    if [ $rc != 0 ]
++    then
++        exit $rc
++    fi
++}
++function makeDirectory
++# $1 directory path
++# $2 permission (optional)
++{
++    mkdir -p "$1"
++    checkReturnCode
++    if [ "$2" != "" ]
++    then
++      chmod $2 "$1"
++      checkReturnCode
++    fi
++}
++function copyFileToTmpDir
++# $1 from-file path
++# $2 to-file path
++# $3 permission
++{
++    cp "$1" "$2"
++    checkReturnCode
++    if [ "$3" != "" ]
++    then
++        chmod $3 "$2"
++        checkReturnCode
++    fi
++}
++
++# Setup
++cd "${TOP}"
++mkdir -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package
++rm -rf ${NBTMPDIR}
++mkdir -p ${NBTMPDIR}
++
++# Copy files and create directories and links
++cd "${TOP}"
++makeDirectory "${NBTMPDIR}/glfxc/bin"
++copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
++
++
++# Generate tar file
++cd "${TOP}"
++rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/glfxc.tar
++cd ${NBTMPDIR}
++tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/glfxc.tar *
++checkReturnCode
++
++# Cleanup
++cd "${TOP}"
++rm -rf ${NBTMPDIR}
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Makefile-Debug.mk
+@@ -0,0 +1,87 @@
++#
++# Generated Makefile - do not edit!
++#
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a -pre and a -post target defined where you can add customized code.
++#
++# This makefile implements configuration specific macros and targets.
++
++
++# Environment
++MKDIR=mkdir
++CP=cp
++GREP=grep
++NM=nm
++CCADMIN=CCadmin
++RANLIB=ranlib
++CC=gcc
++CCC=g++
++CXX=g++
++FC=gfortran
++AS=as
++
++# Macros
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Debug
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++
++# Include project Makefile
++include Makefile
++
++# Object Directory
++OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
++
++# Object Files
++OBJECTFILES= \
++	${OBJECTDIR}/_ext/1360937237/glfxc.o
++
++
++# C Compiler Flags
++CFLAGS=
++
++# CC Compiler Flags
++CCFLAGS=
++CXXFLAGS=
++
++# Fortran Compiler Flags
++FFLAGS=
++
++# Assembler Flags
++ASFLAGS=
++
++# Link Libraries and Options
++LDLIBSOPTIONS=-lGLEW -lglut -Wl,-rpath ../dist/Debug/GNU-Linux-x86 -L../dist/Debug/GNU-Linux-x86 -lglfx
++
++# Build Targets
++.build-conf: ${BUILD_SUBPROJECTS}
++	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++
++${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc: ../dist/Debug/GNU-Linux-x86/libglfx.so
++
++${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc: ${OBJECTFILES}
++	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
++	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc ${OBJECTFILES} ${LDLIBSOPTIONS} 
++
++${OBJECTDIR}/_ext/1360937237/glfxc.o: nbproject/Makefile-${CND_CONF}.mk ../src/glfxc.cpp 
++	${MKDIR} -p ${OBJECTDIR}/_ext/1360937237
++	${RM} $@.d
++	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/_ext/1360937237/glfxc.o ../src/glfxc.cpp
++
++# Subprojects
++.build-subprojects:
++	cd .. && ${MAKE}  -f glfx-Makefile.mk CONF=Debug
++
++# Clean Targets
++.clean-conf: ${CLEAN_SUBPROJECTS}
++	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
++	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++
++# Subprojects
++.clean-subprojects:
++	cd .. && ${MAKE}  -f glfx-Makefile.mk CONF=Debug clean
++
++# Enable dependency checking
++.dep.inc: .depcheck-impl
++
++include .dep.inc
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/configurations.xml
+@@ -0,0 +1,78 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<configurationDescriptor version="79">
++  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
++    <logicalFolder name="HeaderFiles"
++                   displayName="Header Files"
++                   projectFiles="true">
++    </logicalFolder>
++    <logicalFolder name="ResourceFiles"
++                   displayName="Resource Files"
++                   projectFiles="true">
++    </logicalFolder>
++    <logicalFolder name="SourceFiles"
++                   displayName="Source Files"
++                   projectFiles="true">
++      <itemPath>../src/glfxc.cpp</itemPath>
++    </logicalFolder>
++    <logicalFolder name="TestFiles"
++                   displayName="Test Files"
++                   projectFiles="false"
++                   kind="TEST_LOGICAL_FOLDER">
++    </logicalFolder>
++    <logicalFolder name="ExternalFiles"
++                   displayName="Important Files"
++                   projectFiles="false"
++                   kind="IMPORTANT_FILES_FOLDER">
++      <itemPath>Makefile</itemPath>
++    </logicalFolder>
++  </logicalFolder>
++  <projectmakefile>Makefile</projectmakefile>
++  <confs>
++    <conf name="Debug" type="1">
++      <toolsSet>
++        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
++        <compilerSet>default</compilerSet>
++      </toolsSet>
++      <compileType>
++        <linkerTool>
++          <linkerLibItems>
++            <linkerLibLibItem>GLEW</linkerLibLibItem>
++            <linkerLibLibItem>glut</linkerLibLibItem>
++            <linkerLibProjectItem>
++              <makeArtifact PL=".."
++                            CT="2"
++                            CN="Debug"
++                            AC="true"
++                            BL="true"
++                            WD=".."
++                            BC="${MAKE}  -f glfx-Makefile.mk CONF=Debug"
++                            CC="${MAKE}  -f glfx-Makefile.mk CONF=Debug clean"
++                            OP="${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/libglfx.so">
++              </makeArtifact>
++            </linkerLibProjectItem>
++          </linkerLibItems>
++        </linkerTool>
++      </compileType>
++    </conf>
++    <conf name="Release" type="1">
++      <toolsSet>
++        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
++        <compilerSet>default</compilerSet>
++      </toolsSet>
++      <compileType>
++        <cTool>
++          <developmentMode>5</developmentMode>
++        </cTool>
++        <ccTool>
++          <developmentMode>5</developmentMode>
++        </ccTool>
++        <fortranCompilerTool>
++          <developmentMode>5</developmentMode>
++        </fortranCompilerTool>
++        <asmTool>
++          <developmentMode>5</developmentMode>
++        </asmTool>
++      </compileType>
++    </conf>
++  </confs>
++</configurationDescriptor>
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Makefile-impl.mk
+@@ -0,0 +1,133 @@
++# 
++# Generated Makefile - do not edit! 
++# 
++# Edit the Makefile in the project folder instead (../Makefile). Each target
++# has a pre- and a post- target defined where you can add customization code.
++#
++# This makefile implements macros and targets common to all configurations.
++#
++# NOCDDL
++
++
++# Building and Cleaning subprojects are done by default, but can be controlled with the SUB
++# macro. If SUB=no, subprojects will not be built or cleaned. The following macro
++# statements set BUILD_SUB-CONF and CLEAN_SUB-CONF to .build-reqprojects-conf
++# and .clean-reqprojects-conf unless SUB has the value 'no'
++SUB_no=NO
++SUBPROJECTS=${SUB_${SUB}}
++BUILD_SUBPROJECTS_=.build-subprojects
++BUILD_SUBPROJECTS_NO=
++BUILD_SUBPROJECTS=${BUILD_SUBPROJECTS_${SUBPROJECTS}}
++CLEAN_SUBPROJECTS_=.clean-subprojects
++CLEAN_SUBPROJECTS_NO=
++CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
++
++
++# Project Name
++PROJECTNAME=glfxc
++
++# Active Configuration
++DEFAULTCONF=Debug
++CONF=${DEFAULTCONF}
++
++# All Configurations
++ALLCONFS=Debug Release 
++
++
++# build
++.build-impl: .build-pre .validate-impl .depcheck-impl
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .build-conf
++
++
++# clean
++.clean-impl: .clean-pre .validate-impl .depcheck-impl
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf
++
++
++# clobber 
++.clobber-impl: .clobber-pre .depcheck-impl
++	@#echo "=> Running $@..."
++	for CONF in ${ALLCONFS}; \
++	do \
++	    "${MAKE}" -f nbproject/Makefile-$${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .clean-conf; \
++	done
++
++# all 
++.all-impl: .all-pre .depcheck-impl
++	@#echo "=> Running $@..."
++	for CONF in ${ALLCONFS}; \
++	do \
++	    "${MAKE}" -f nbproject/Makefile-$${CONF}.mk QMAKE=${QMAKE} SUBPROJECTS=${SUBPROJECTS} .build-conf; \
++	done
++
++# build tests
++.build-tests-impl: .build-impl .build-tests-pre
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk SUBPROJECTS=${SUBPROJECTS} .build-tests-conf
++
++# run tests
++.test-impl: .build-tests-impl .test-pre
++	@#echo "=> Running $@... Configuration=$(CONF)"
++	"${MAKE}" -f nbproject/Makefile-${CONF}.mk SUBPROJECTS=${SUBPROJECTS} .test-conf
++
++# dependency checking support
++.depcheck-impl:
++	@echo "# This code depends on make tool being used" >.dep.inc
++	@if [ -n "${MAKE_VERSION}" ]; then \
++	    echo "DEPFILES=\$$(wildcard \$$(addsuffix .d, \$${OBJECTFILES}))" >>.dep.inc; \
++	    echo "ifneq (\$${DEPFILES},)" >>.dep.inc; \
++	    echo "include \$${DEPFILES}" >>.dep.inc; \
++	    echo "endif" >>.dep.inc; \
++	else \
++	    echo ".KEEP_STATE:" >>.dep.inc; \
++	    echo ".KEEP_STATE_FILE:.make.state.\$${CONF}" >>.dep.inc; \
++	fi
++
++# configuration validation
++.validate-impl:
++	@if [ ! -f nbproject/Makefile-${CONF}.mk ]; \
++	then \
++	    echo ""; \
++	    echo "Error: can not find the makefile for configuration '${CONF}' in project ${PROJECTNAME}"; \
++	    echo "See 'make help' for details."; \
++	    echo "Current directory: " `pwd`; \
++	    echo ""; \
++	fi
++	@if [ ! -f nbproject/Makefile-${CONF}.mk ]; \
++	then \
++	    exit 1; \
++	fi
++
++
++# help
++.help-impl: .help-pre
++	@echo "This makefile supports the following configurations:"
++	@echo "    ${ALLCONFS}"
++	@echo ""
++	@echo "and the following targets:"
++	@echo "    build  (default target)"
++	@echo "    clean"
++	@echo "    clobber"
++	@echo "    all"
++	@echo "    help"
++	@echo ""
++	@echo "Makefile Usage:"
++	@echo "    make [CONF=<CONFIGURATION>] [SUB=no] build"
++	@echo "    make [CONF=<CONFIGURATION>] [SUB=no] clean"
++	@echo "    make [SUB=no] clobber"
++	@echo "    make [SUB=no] all"
++	@echo "    make help"
++	@echo ""
++	@echo "Target 'build' will build a specific configuration and, unless 'SUB=no',"
++	@echo "    also build subprojects."
++	@echo "Target 'clean' will clean a specific configuration and, unless 'SUB=no',"
++	@echo "    also clean subprojects."
++	@echo "Target 'clobber' will remove all built files from all configurations and,"
++	@echo "    unless 'SUB=no', also from subprojects."
++	@echo "Target 'all' will will build all configurations and, unless 'SUB=no',"
++	@echo "    also build subprojects."
++	@echo "Target 'help' prints this message."
++	@echo ""
++
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Makefile-variables.mk
+@@ -0,0 +1,35 @@
++#
++# Generated - do not edit!
++#
++# NOCDDL
++#
++CND_BASEDIR=`pwd`
++CND_BUILDDIR=build
++CND_DISTDIR=dist
++# Debug configuration
++CND_PLATFORM_Debug=GNU-Linux-x86
++CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
++CND_ARTIFACT_NAME_Debug=glfxc
++CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/glfxc
++CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
++CND_PACKAGE_NAME_Debug=glfxc.tar
++CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/glfxc.tar
++# Release configuration
++CND_PLATFORM_Release=GNU-Linux-x86
++CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
++CND_ARTIFACT_NAME_Release=glfxc
++CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/glfxc
++CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
++CND_PACKAGE_NAME_Release=glfxc.tar
++CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/glfxc.tar
++#
++# include compiler specific variables
++#
++# dmake command
++ROOT:sh = test -f nbproject/private/Makefile-variables.mk || \
++	(mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk)
++#
++# gmake command
++.PHONY: $(shell test -f nbproject/private/Makefile-variables.mk || (mkdir -p nbproject/private && touch nbproject/private/Makefile-variables.mk))
++#
++include nbproject/private/Makefile-variables.mk
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/Package-Debug.bash
+@@ -0,0 +1,75 @@
++#!/bin/bash -x
++
++#
++# Generated - do not edit!
++#
++
++# Macros
++TOP=`pwd`
++CND_PLATFORM=GNU-Linux-x86
++CND_CONF=Debug
++CND_DISTDIR=dist
++CND_BUILDDIR=build
++NBTMPDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}/tmp-packaging
++TMPDIRNAME=tmp-packaging
++OUTPUT_PATH=${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/glfxc
++OUTPUT_BASENAME=glfxc
++PACKAGE_TOP_DIR=glfxc/
++
++# Functions
++function checkReturnCode
++{
++    rc=$?
++    if [ $rc != 0 ]
++    then
++        exit $rc
++    fi
++}
++function makeDirectory
++# $1 directory path
++# $2 permission (optional)
++{
++    mkdir -p "$1"
++    checkReturnCode
++    if [ "$2" != "" ]
++    then
++      chmod $2 "$1"
++      checkReturnCode
++    fi
++}
++function copyFileToTmpDir
++# $1 from-file path
++# $2 to-file path
++# $3 permission
++{
++    cp "$1" "$2"
++    checkReturnCode
++    if [ "$3" != "" ]
++    then
++        chmod $3 "$2"
++        checkReturnCode
++    fi
++}
++
++# Setup
++cd "${TOP}"
++mkdir -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package
++rm -rf ${NBTMPDIR}
++mkdir -p ${NBTMPDIR}
++
++# Copy files and create directories and links
++cd "${TOP}"
++makeDirectory "${NBTMPDIR}/glfxc/bin"
++copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
++
++
++# Generate tar file
++cd "${TOP}"
++rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/glfxc.tar
++cd ${NBTMPDIR}
++tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/glfxc.tar *
++checkReturnCode
++
++# Cleanup
++cd "${TOP}"
++rm -rf ${NBTMPDIR}
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/project.xml
+@@ -0,0 +1,27 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://www.netbeans.org/ns/project/1">
++    <type>org.netbeans.modules.cnd.makeproject</type>
++    <configuration>
++        <data xmlns="http://www.netbeans.org/ns/make-project/1">
++            <name>glfxc</name>
++            <c-extensions/>
++            <cpp-extensions>cpp</cpp-extensions>
++            <header-extensions/>
++            <sourceEncoding>UTF-8</sourceEncoding>
++            <make-dep-projects>
++                <make-dep-project>..</make-dep-project>
++            </make-dep-projects>
++            <sourceRootList/>
++            <confList>
++                <confElem>
++                    <name>Debug</name>
++                    <type>1</type>
++                </confElem>
++                <confElem>
++                    <name>Release</name>
++                    <type>1</type>
++                </confElem>
++            </confList>
++        </data>
++    </configuration>
++</project>
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/private/private.xml
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
++    <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
++        <activeConfTypeElem>1</activeConfTypeElem>
++        <activeConfIndexElem>0</activeConfIndexElem>
++    </data>
++    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/1"/>
++</project-private>
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/private/configurations.xml
+@@ -0,0 +1,79 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<configurationDescriptor version="79">
++  <projectmakefile>Makefile</projectmakefile>
++  <confs>
++    <conf name="Debug" type="1">
++      <toolsSet>
++        <developmentServer>localhost</developmentServer>
++        <platform>2</platform>
++      </toolsSet>
++      <dbx_gdbdebugger version="1">
++        <gdb_pathmaps>
++        </gdb_pathmaps>
++        <gdb_interceptlist>
++          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
++        </gdb_interceptlist>
++        <gdb_options>
++          <DebugOptions>
++          </DebugOptions>
++        </gdb_options>
++        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
++      </dbx_gdbdebugger>
++      <gizmo_options version="3">
++        <configurationname>GizmoSimple</configurationname>
++      </gizmo_options>
++      <nativedebugger version="1">
++        <engine>gdb</engine>
++      </nativedebugger>
++      <runprofile version="9">
++        <runcommandpicklist>
++          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
++          <runcommandpicklistitem>"${OUTPUT_PATH}" test.glsl test</runcommandpicklistitem>
++        </runcommandpicklist>
++        <runcommand>"${OUTPUT_PATH}" test.glsl test</runcommand>
++        <rundir></rundir>
++        <buildfirst>true</buildfirst>
++        <terminal-type>0</terminal-type>
++        <remove-instrumentation>0</remove-instrumentation>
++        <environment>
++        </environment>
++      </runprofile>
++    </conf>
++    <conf name="Release" type="1">
++      <toolsSet>
++        <developmentServer>localhost</developmentServer>
++        <platform>2</platform>
++      </toolsSet>
++      <dbx_gdbdebugger version="1">
++        <gdb_pathmaps>
++        </gdb_pathmaps>
++        <gdb_interceptlist>
++          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
++        </gdb_interceptlist>
++        <gdb_options>
++          <DebugOptions>
++          </DebugOptions>
++        </gdb_options>
++        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
++      </dbx_gdbdebugger>
++      <gizmo_options version="3">
++        <configurationname>GizmoSimple</configurationname>
++      </gizmo_options>
++      <nativedebugger version="1">
++        <engine>gdb</engine>
++      </nativedebugger>
++      <runprofile version="9">
++        <runcommandpicklist>
++          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
++        </runcommandpicklist>
++        <runcommand>"${OUTPUT_PATH}"</runcommand>
++        <rundir></rundir>
++        <buildfirst>true</buildfirst>
++        <terminal-type>0</terminal-type>
++        <remove-instrumentation>0</remove-instrumentation>
++        <environment>
++        </environment>
++      </runprofile>
++    </conf>
++  </confs>
++</configurationDescriptor>
+--- /dev/null
++++ libglfx-0.3/glfxc/nbproject/private/Makefile-variables.mk
+@@ -0,0 +1,7 @@
++#
++# Generated - do not edit!
++#
++# NOCDDL
++#
++# Debug configuration
++# Release configuration
