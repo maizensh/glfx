@@ -237,6 +237,9 @@ param_list : param_list COMMA fullparam {
     $$.vars = new vector<YYSTYPE::variable>;
     $$.vars->push_back(var);
 }
+    | {
+    $$.vars = new vector<YYSTYPE::variable>;
+}
 ;
 
 fullparam : storage param arrayBrackets location {
