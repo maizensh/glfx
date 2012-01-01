@@ -90,7 +90,7 @@ FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 "="                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Equals"); return EQUALS;}
 ";"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Semicolon"); return SC;}
 ":"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Colon"); return COLON;}
-\/\/[^\n\\]*((\\)+[^\\][^\n\\]*)*\n             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Single line comment (with possible continuation)
+\/\/[^\n]*\n                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Single line comment
 \/\*[^*]*\*(([^*/][^*]*)*\*)*\/                 if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Multiline comment
 [\t\n ]                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext;
 .                                               if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {errLex(yytext);}
