@@ -224,7 +224,6 @@ top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libglfx.la
 libglfx_la_SOURCES = glfx.cpp glfxLALRParser.cpp glfxScanner.cpp  
 AM_CPPFLAGS = -DLINUX -I../include -Wall
-AM_YFLAGS = -d 
 glfxc_SOURCES = glfxc.cpp
 glfxc_LDADD = -lglut -lGLEW libglfx.la
 all: all-am
@@ -583,10 +582,6 @@ uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 	mostlyclean-libtool pdf pdf-am ps ps-am tags uninstall \
 	uninstall-am uninstall-binPROGRAMS uninstall-libLTLIBRARIES
 
-glfxScanner.cpp: glfx.lpp
-	flex $<
-glfxLALRParser.cpp: glfx.ypp
-	bison -d $<
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

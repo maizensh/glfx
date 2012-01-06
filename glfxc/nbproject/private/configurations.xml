@@ -29,8 +29,9 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" test.glsl test</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" /home/cl/hacking/graphics/opengl/Tutorials/Tutorial36/shaders/null_technique.glsl NullTechnique</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" test.glsl test</runcommand>
+        <runcommand>"${OUTPUT_PATH}" /home/cl/hacking/graphics/opengl/Tutorials/Tutorial36/shaders/null_technique.glsl NullTechnique</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>

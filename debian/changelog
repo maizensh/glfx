@@ -1,3 +1,15 @@
+libglfx (0.5-0ubuntu5) oneiric; urgency=low
+
+  * Updated the new GLFX site.
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Fri, 06 Jan 2012 15:26:25 +0200
+
+libglfx (0.4-0ubuntu4) oneiric; urgency=low
+
+  * GLFX moved to http://code.google.com/p/glfx/ - update to r9.
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Sun, 01 Jan 2012 21:42:29 +0200
+
 libglfx (0.3-0ubuntu3) oneiric; urgency=low
 
   * Update to revision r107 from glfx upstream.
