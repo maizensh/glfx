@@ -29,7 +29,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include <cstring>
 #include <sstream>
 #include <cstdio>
-#include <assert.h>
+#include <cassert>
 
 #ifdef WIN32
 #define GLEW_STATIC
@@ -364,7 +364,7 @@ int glfxGenEffect()
 bool glfxParseEffectFromFile( int effect, const char* file )
 {
     bool retVal=true;
-	
+    
     fopen_s(&glfxin, file, "r");
     if(glfxin==NULL) {
         gEffects[effect]->Log()<<"Cannot open file "<<file<<endl;
