@@ -1550,7 +1550,7 @@ if(gLexPassthrough) gEffect->m_sharedCode<<glfxtext; else {glfxlval.num=atoi(glf
 case 13:
 YY_RULE_SETUP
 #line 75 "glfx.lpp"
-if(gLexPassthrough) gEffect->m_sharedCode<<glfxtext; else {glfxlval.fnum=atof(glfxtext); return FLOAT;}
+if(gLexPassthrough) gEffect->m_sharedCode<<glfxtext; else {glfxlval.fnum=(float)atof(glfxtext); return FLOAT;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP

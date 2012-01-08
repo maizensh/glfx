@@ -72,7 +72,7 @@ FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 "gs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=GS; return SHADER_TYPE;}
 "fs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=FS; return SHADER_TYPE;}
 {NUM_BLCK}                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=atoi(yytext); return NUM;}
-{FLOAT_BLCK}                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.fnum=atof(yytext); return FLOAT;}
+{FLOAT_BLCK}                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.fnum=(float)atof(yytext); return FLOAT;}
 "in"|"out"                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return STORAGEQ;}
 "true"                                          if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=1; return NUM;}
 "false"                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=0; return NUM;}
