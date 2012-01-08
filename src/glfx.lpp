@@ -6,8 +6,6 @@
 %option outfile="glfxScanner.cpp" header-file="glfxScanner.h"
 
 %{
-    //#define DEBUG_PRINT
-
     #ifdef _MSC_VER
     // MS's C++ compiler is more strict than gcc
 
@@ -43,7 +41,6 @@
     // tokens from parser generator
     #include "glfxLALRParser.hpp"
 
-    static void debugPrint(const char* name);
     static void errLex(const char* tok);
 
     using namespace std;
@@ -56,12 +53,11 @@ STR_BLCK \"[^"\n]*\"
 FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 
 %%
-"program"                                       debugPrint("program"); glfxlval.lineno=yylineno; return PROGRAM;
-"shader"                                        debugPrint("shader"); glfxlval.lineno=yylineno; return SHADER;
-"interface"                                     debugPrint("interface"); glfxlval.lineno=yylineno; return INTERFACE;
-"sampler"|"image"                               debugPrint("sampler"); glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return SAMPLER;
-"#include"[\t ]+{STR_BLCK}[\t ]*\n              {
-                                                    debugPrint("include");
+"program"                                       glfxlval.lineno=yylineno; return PROGRAM;
+"shader"                                        glfxlval.lineno=yylineno; return SHADER;
+"interface"                                     glfxlval.lineno=yylineno; return INTERFACE;
+"sampler"|"image"                               glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return SAMPLER;
+^"#include"[\t ]+{STR_BLCK}[\t ]*\n             {
                                                     string tmp(yytext);
                                                     size_t firstLoc=tmp.find('"')+1;
                                                     size_t secondLoc=tmp.find('"', firstLoc);
@@ -69,39 +65,32 @@ FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
                                                     glfxlval.lineno=yylineno-1; // flex has already jumped one line, since \n was eaten
                                                     return INCLUDE;
                                                 }
-"patch"|"centroid"                              if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("storageType"); glfxlval.strs[0]=yytext; return STORAGET;}
-"vs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("vs"); glfxlval.sType=VS; return SHADER_TYPE;}
-"tc"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("tc"); glfxlval.sType=TC; return SHADER_TYPE;}
-"te"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("te"); glfxlval.sType=TE; return SHADER_TYPE;}
-"gs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("gs"); glfxlval.sType=GS; return SHADER_TYPE;}
-"fs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("fs"); glfxlval.sType=FS; return SHADER_TYPE;}
-{NUM_BLCK}                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("num"); glfxlval.num=atoi(yytext); return NUM;}
-{FLOAT_BLCK}                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("float"); glfxlval.fnum=atof(yytext); return FLOAT;}
-"in"|"out"                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("storageQualifier"); glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return STORAGEQ;}
-"true"                                          if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("true"); glfxlval.num=1; return NUM;}
-"false"                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("false"); glfxlval.num=0; return NUM;}
-{ID_BLCK}                                       if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Identificator"); glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return IDENTIFIER;}
-"("                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Left parenthesis"); return LP;}
-")"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Right parenthesis"); return RP;}
-"{"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Left braces"); return LB;}
-"}"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Right braces"); return RB;}
-"["[\t ]*"]"                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("brackets"); return EMPTY_ARRAY_BRACKETS;}
-","                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Comma"); return COMMA;}
-"="                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Equals"); return EQUALS;}
-";"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Semicolon"); return SC;}
-":"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {debugPrint("Colon"); return COLON;}
-\/\/[^\n]*\n                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Single line comment
+"patch"|"centroid"                              if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.strs[0]=yytext; return STORAGET;}
+"vs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=VS; return SHADER_TYPE;}
+"tc"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=TC; return SHADER_TYPE;}
+"te"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=TE; return SHADER_TYPE;}
+"gs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=GS; return SHADER_TYPE;}
+"fs"                                            if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.sType=FS; return SHADER_TYPE;}
+{NUM_BLCK}                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=atoi(yytext); return NUM;}
+{FLOAT_BLCK}                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.fnum=atof(yytext); return FLOAT;}
+"in"|"out"                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return STORAGEQ;}
+"true"                                          if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=1; return NUM;}
+"false"                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=0; return NUM;}
+{ID_BLCK}                                       if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return IDENTIFIER;}
+"("                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return LP;}
+")"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return RP;}
+"{"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return LB;}
+"}"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return RB;}
+"["[\t ]*"]"                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return EMPTY_ARRAY_BRACKETS;}
+","                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return COMMA;}
+"="                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return EQUALS;}
+";"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return SC;}
+":"                                             if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {return COLON;}
+\/\/[^\n\\]*(\\+[^\\][^\n\\]*)*\n               if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Single line comment (with possible continuation)
 \/\*[^*]*\*(([^*/][^*]*)*\*)*\/                 if(gLexPassthrough) gEffect->m_sharedCode<<yytext; // Multiline comment
 [\t\n ]                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext;
 .                                               if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {errLex(yytext);}
 %%
-
-void debugPrint(const char* name)
-{
-#ifdef DEBUG_PRINT
-    cerr<<name<<" - "<<yytext<<endl;
-#endif
-}
 
 void errLex(const char* tok)
 {
