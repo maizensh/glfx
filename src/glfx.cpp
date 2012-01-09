@@ -382,6 +382,7 @@ bool glfxParseEffectFromFile( int effect, const char* file )
         gEffect->Dir()=fname.substr(0, lastSlash);
 
         glfxrestart(glfxin);
+        glfxset_lineno(1);
         glfxparse();
     }
     catch(const char* err) {
