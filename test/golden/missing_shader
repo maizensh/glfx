@@ -1,0 +1,3 @@
+Error creating effect:
+0(164) : error: Unable to find referenced shader "foo"
+

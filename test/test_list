@@ -1,0 +1,10 @@
+# Format: 
+# <shader file> <program name> <golden glfxc result>
+null_technique.glsl NullTechnique success
+geometry_pass.glsl GeometryPass success
+lighting.glsl Lighting success
+light_pass.glsl LightPass success
+simple_technique.glsl SimpleTechnique success
+lighting.glsl foo invalid_program
+missing_shader.glsl Lighting missing_shader
+missing_prefix.glsl Lighting  invalid_prefix
