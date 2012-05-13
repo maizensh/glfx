@@ -1,10 +1,18 @@
+libglfx (0.52-0ubuntu7) oneiric; urgency=low
+
+  * Update to r19 
+  * 
+  * 
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Sat, 12 May 2012 16:24:31 +0300
+
 libglfx (0.51-0ubuntu6) oneiric; urgency=low
 
-  * Update to r17:
-	1. Cleanup of scanner.
-	2. Restored single-to-multiline comments, since they're correct according to glsl spec. Though NVIDIA compiler doesn't handle them.
-	3. Compilation warning fix.
-	4. Bug fix. Scanner line reset on new file.
+  * Update to r17.
+ Cleanup of scanner.
+ Restored single-to-multiline comments, since they're correct according to glsl spec. Though NVIDIA compiler doesn't handle them.
+ Compilation warning fix.
+ Bug fix. Scanner line reset on new file.
 
  -- Etay Meiri <etay.meiri@gmail.com>  Sun, 15 Jan 2012 20:20:56 +0200
 
