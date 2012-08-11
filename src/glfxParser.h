@@ -65,6 +65,7 @@ struct glfxstype {
         unsigned unum;
         int lineno;
         float fnum;
+        bool boolean;
         Program* prog;
         Sampler* samp;
         map<ShaderType, Program::Shader>* shaders;
@@ -76,7 +77,6 @@ struct glfxstype {
         SamplerParam samplerParamType;
         ShaderType sType;
         RegisterParamType rType;
-        int num2;
     };
 
     // Carrying these around is bad luck, or more like bad performance. But whatever...

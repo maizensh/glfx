@@ -1554,12 +1554,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 56 "glfx.lpp"
-glfxlval.lineno=glfxlineno; glfxlval.num2=0; return PROGRAM;
+glfxlval.boolean=false; return PROGRAM;
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 57 "glfx.lpp"
-glfxlval.lineno=glfxlineno; glfxlval.num2=1; return PROGRAM;
+glfxlval.boolean=true; return PROGRAM;
 	YY_BREAK
 case 3:
 YY_RULE_SETUP

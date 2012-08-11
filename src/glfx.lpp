@@ -53,8 +53,8 @@ STR_BLCK \"[^"\n]*\"
 FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 
 %%
-"program"                                       glfxlval.lineno=yylineno; glfxlval.num2=0; return PROGRAM;
-"stages"                                        glfxlval.lineno=yylineno; glfxlval.num2=1; return PROGRAM;
+"program"                                       glfxlval.boolean=false; return PROGRAM;
+"stages"                                        glfxlval.boolean=true; return PROGRAM;
 "shader"                                        glfxlval.lineno=yylineno; return SHADER;
 "interface"                                     glfxlval.lineno=yylineno; return INTERFACE;
 "sampler"|"image"                               glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return SAMPLER;

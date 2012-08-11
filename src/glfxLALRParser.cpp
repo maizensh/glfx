@@ -1511,7 +1511,7 @@ yyreduce:
 /* Line 1806 of yacc.c  */
 #line 72 "glfx.ypp"
     {
-    (yyvsp[(5) - (8)]).prog->m_separable=(yyvsp[(1) - (8)]).num2 != 0;
+    (yyvsp[(5) - (8)]).prog->m_separable=(yyvsp[(1) - (8)]).boolean;
     gEffect->m_programs[(yyvsp[(3) - (8)]).strs[0]]=(yyvsp[(5) - (8)]).prog;
 }
     break;
