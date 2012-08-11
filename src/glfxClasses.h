@@ -44,6 +44,7 @@ enum ShaderType {
     TE,
     GS,
     FS,
+    CS,
     NUM_OF_SHADER_TYPES
 };
 
@@ -61,6 +62,9 @@ private:
     int CompileShader(unsigned shader, const Shader& shaderSrc, ostringstream& sLog) const;
 
     Shader  m_shaders[NUM_OF_SHADER_TYPES];
+    bool    m_separable;
+
+    friend int ::glfxparse();
 };
 
 class Sampler {

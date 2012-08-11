@@ -78,17 +78,19 @@ Program::Program(const map<ShaderType,Shader>& shaders)
 {
     map<ShaderType,Shader>::const_iterator it;
     
-    ShaderType types[NUM_OF_SHADER_TYPES]={VS,TC,TE,GS,FS};
+    ShaderType types[NUM_OF_SHADER_TYPES]={VS,TC,TE,GS,FS,CS};
     for(int i=0;i<NUM_OF_SHADER_TYPES;i++) {
         it=shaders.find(types[i]);
         if(it!=shaders.end())
             m_shaders[i]=it->second;
     }
+
+    m_separable=false;
 }
 
 unsigned Program::CompileAndLink(string& log) const
 {
-    GLuint shader;
+    vector<GLuint> shaders;
     ostringstream sLog;
     
     GLuint programId=glCreateProgram();
@@ -98,17 +100,25 @@ unsigned Program::CompileAndLink(string& log) const
                                             GL_TESS_CONTROL_SHADER,
                                             GL_TESS_EVALUATION_SHADER,
                                             GL_GEOMETRY_SHADER,
-                                            GL_FRAGMENT_SHADER};
+                                            GL_FRAGMENT_SHADER,
+                                            GL_COMPUTE_SHADER};
     for(int i=0;i<NUM_OF_SHADER_TYPES;i++) {
         if(m_shaders[i].src.size()>0) {
-            shader=glCreateShader(shaderTypes[i]);
-            res&=CompileShader(shader, m_shaders[i], sLog);
-            glAttachShader(programId, shader);
-            glDeleteShader(shader);
+            shaders.push_back(glCreateShader(shaderTypes[i]));
+            res&=CompileShader(shaders.back(), m_shaders[i], sLog);
+            glAttachShader(programId, shaders.back());
         }
     }
     
+    if(m_separable)
+        glProgramParameteri(programId, GL_PROGRAM_SEPARABLE, GL_TRUE);
+
     glLinkProgram(programId);
+
+    for(vector<GLuint>::const_iterator it=shaders.begin();it!=shaders.end();++it) {
+        glDetachShader(programId, *it);
+        glDeleteShader(*it);
+    }
     
     GLint tmp;
     glGetProgramiv(programId, GL_LINK_STATUS, &tmp);

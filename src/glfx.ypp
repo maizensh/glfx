@@ -70,6 +70,7 @@ tok : INTERFACE lex_fx IDENTIFIER read_block SC lex_passthrough {
     gEffect->m_shaders[$3.strs[0]]=shaderCode.str();
 }
     | PROGRAM lex_fx IDENTIFIER LB prog_def RB SC lex_passthrough {
+    $5.prog->m_separable=$1.num2 != 0;
     gEffect->m_programs[$3.strs[0]]=$5.prog;
 }
     | INCLUDE {
