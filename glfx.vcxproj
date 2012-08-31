@@ -19,16 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\glew\build\vc6\glew_static.vcxproj">
-      <Project>{1bd720f6-4a7b-2ba6-8ece-f12d3ca64b8f}</Project>
-      <Private>true</Private>
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\glfx.cpp" />
     <ClCompile Include="src\glfxLALRParser.cpp" />
     <ClCompile Include="src\glfxScanner.cpp" />
@@ -43,6 +33,11 @@
   <ItemGroup>
     <None Include="src\glfx.lpp" />
     <None Include="src\glfx.ypp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\glew\build\vc10\glew_static.vcxproj">
+      <Project>{bf4e7726-70aa-73df-14cb-aad6e45c6fed}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C16E3F9-BA50-45A0-A7FF-C985C7721BEB}</ProjectGuid>
