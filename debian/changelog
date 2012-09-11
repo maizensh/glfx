@@ -1,8 +1,17 @@
+libglfx (0.60-0ubuntu7) oneiric; urgency=low
+
+  * Update to r23 
+ Added support for compute shader.
+ Added support for linking separable programs, by using "stages" keyword instead of "program".
+ Relinking programs outside of glfx won't work anymore, because shaders are detached and deleted right after link.
+ Small cleanup into more readable code
+
+ -- Etay Meiri <etay.meiri@gmail.com>  Sat, 12 May 2012 16:24:31 +0300
+
 libglfx (0.52-0ubuntu7) oneiric; urgency=low
 
   * Update to r19 
-  * 
-  * 
+ Identifiers with underscore are now allowed
 
  -- Etay Meiri <etay.meiri@gmail.com>  Sat, 12 May 2012 16:24:31 +0300
 
