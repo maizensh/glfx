@@ -1,0 +1,516 @@
+%\documentclass[11pt,a4paper,draft,titlepage]{article}
+\documentclass[11pt,a4paper,final,titlepage]{article}
+
+\usepackage{fixltx2e}
+\usepackage{fullpage}
+\usepackage[svgnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{graphicx,float,wrapfig,tabulary}
+\usepackage[justification=Centering,singlelinecheck=false,labelformat=empty]{subfig}
+\usepackage{showkeys}
+\usepackage{ulem}
+\usepackage{lipsum}
+\usepackage{fixme}
+\usepackage{aliascnt}
+\usepackage{wasysym,marvosym,textcomp}
+\usepackage{fontspec,xunicode,xltxtra}
+\usepackage[naturalnames,colorlinks=true,linkcolor=blue,xetex]{hyperref}
+\usepackage[ruled,vlined,linesnumbered,algonl]{algorithm2e}
+\usepackage[final]{listings}
+\usepackage{attachfile}
+
+\parskip .3cm
+
+\fxsetup{
+    status=draft,
+    author={TODO},
+    layout=inline, % also try inline, footnote or pdfnote
+    theme=color
+}
+
+% Fonts
+\setmainfont[Mapping=tex-text]{Cambria}
+\setsansfont{Microsoft Sans Serif}
+\setmonofont{Consolas}
+
+% Define C++ syntax for listings
+\lstset{language=C++,
+%caption=\lstname,
+%backgroundcolor=\color{LightGrey},
+tabsize=4,
+rulecolor=,
+%basicstyle=\scriptsize,
+%basicstyle=\small,
+basicstyle=\normalsize\ttfamily,
+upquote=true,
+aboveskip={1.5\baselineskip},
+columns=fixed,
+showstringspaces=false,
+extendedchars=true,
+breaklines=true,
+%prebreak = \raisebox{-1ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+%frame=single,
+showtabs=false,
+showspaces=false,
+showstringspaces=false,
+identifierstyle=\bfseries,
+keywordstyle=\color[rgb]{0,0,.5},
+%keywordstyle=\bfseries\ttfamily\color[rgb]{0,0,1},
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\color[rgb]{0.627,0.126,0.941},
+xleftmargin=0.3cm,
+% Add some keywords for GLSL
+morekeywords={vec4,vec3,vec2,in,out,flat,sampler2DArray,texture,gl_Position,layout,shader,interface,
+uniform,mat4,program,vs,fs,stages,sampler},
+}
+
+\normalem
+
+% Theorems and such
+\newtheorem{theorem}{Theorem}
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+% In case I want unique numbering for lemmas then comment
+% three previous lines and uncomment next line
+%\newtheorem{lemma}{Lemma}
+
+% hyperref names redo (and additions)
+\let\orgautoref\autoref
+\renewcommand{\autoref}{%
+\def\sectionautorefname{Sec.}%
+\def\subsectionautorefname{Sec.}%
+\def\algocflineautorefname{Alg.}%
+\def\lemmaautorefname{Lemma}%
+\orgautoref}
+\providecommand{\Autoref}{%
+\def\sectionautorefname{Section}%
+\def\subsectionautorefname{Section}%
+\def\algocflineautorefname{Algorithm}%
+\def\lemmaautorefname{Lemma}%
+\orgautoref}
+
+% Algorithms stuff
+\SetKwInOut{Input}{input}
+\SetKwInOut{Output}{output}
+%\dontprintsemicolon
+
+\newcommand{\LL}{\mathcal{L}}
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\rs}{\mathbb{R}}
+\newcommand{\lp}{\left(}
+\newcommand{\rp}{\right)}
+\newcommand{\slp}{\left[}
+\newcommand{\srp}{\right]}
+\newcommand{\lnm}{\left\|}
+\newcommand{\rnm}{\right\|}
+\newcommand{\ld}{\left<}
+\newcommand{\rd}{\right>}
+\newcommand{\lb}{\left\{}
+\newcommand{\rb}{\right\}}
+\newcommand{\partiald}[2]{\frac{\partial#1}{\partial#2}}
+\newcommand{\fulld}[3][]{\frac{d^{#1}}{d{#3}^{#1}}\lp#2\rp}
+\newcommand{\fullds}[3][]{\frac{d^{#1}#2}{d{#3}^{#1}}}
+\newcommand{\ft}[1]{\mathcal{F}\lb #1\rb}
+\newcommand{\ift}[1]{\mathcal{F}^{-1}\lb #1\rb}
+\newcommand{\sfrac}[2]{{}^{#1}/_{#2}\;}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+
+\begin{document}
+\title{GLFX 0.6}
+\author{Max Eisenstein\\Etay Meiri}
+\date{\today}
+\maketitle
+
+\listoffixmes
+
+\tableofcontents
+
+\pagebreak
+
+\section{Introduction}\label{sec:intro}
+This document describes the GLFX parser: what it is, what its relation to GLSL,
+what syntax it has, how to use it and its shortcomings. We assume that the reader is familiar with the
+4.3 OpenGL and GLSL specifications (from now on, the OpenGL spec).
+
+\subsection{What is GLFX?}
+In simplest terms, GLFX is a source to source parser which is managed by a set of interface functions
+(from now on, in short, API).
+It exists in order to fill a few gaps which were formed in the OpenGL spec:
+\begin{itemize}
+\item The lack of any reference to the underlying file system in the context of shader programs.
+As far as the OpenGL spec cares you can hold your shader code in static strings. Basic file system access
+is a fairly standardized process today, so there's no reason to be so harsh as OpenGL.
+\item The GLSL compiler expects a single entry point in the shader source, namely the
+{\texttt{\textbf{main}}} function. This makes perfect sense for C/C++ programs, and since
+GLSL syntax stems from C it inherited the same entry point. However, the OpenGL
+pipeline consists of stages, while each programmable stage has its own code.
+Hence, using the same name for all entry points from different stages just doesn't make sense.
+\item The lack of a simple and intuitive header mechanism (combined with the previous bullet) completely
+shuts down all simple ways to share code and definitions between programmable stages
+(either from the same program or different programs).
+Also, the \texttt{ARB\_\-shading\_\-language\_\-include} extension doesn't make
+it any easier to share definitions between your C++ code and your shader code, basically dropping
+you to square one if that was your intent.
+Besides that, the extension isn't very intuitive to use. And finally, it's just an extension, not core.
+\item Except for \texttt{\textbf{Create\-Shader\-Program}}, there are no functions that act as
+wrappers for lower level API.
+This forces the users to perform the exact same calls every time they want to construct a program.
+\item In many cases it makes more sense define a sampler from within the shader, since the shader
+should know how to sample from the resource.
+\end{itemize}
+
+\subsection{Relation to GLSL}
+GLFX tries to fill the previously mentioned gaps in a manner which will be most consistent with
+the spirit of GLSL and the pipelined nature of OpenGL. Since, at this point, it's a relatively simple
+package, some shortcuts were made in order to deliver usability while sacrificing consistency.
+These shortcomings will be addressed in future releases.
+
+If you're familiar with GLSL, using GLFX should be a straightforward procedure. If you're familiar
+with HLSL, you'll see similar ideas to what was used in Microsoft's effects package.
+
+\pagebreak
+\section{The GLFX API}
+
+\subsection{Manipulating effect objects}
+Effect objects are associated with effect files (which will be discussed in \autoref{sec:effFiles})
+which hold all the information required to compile and link programs.
+
+In order to generate an effect object, call:
+
+\begin{lstlisting}
+int glfxGenEffect();
+\end{lstlisting}
+The return value is the identifier of the effect object.
+
+In order to delete effect object, call:
+
+\begin{lstlisting}
+void glfxDeleteEffect(int effect);
+\end{lstlisting}
+With \texttt{\textbf{effect}} as the identifier of the effect.
+
+In order to attach an effect file and to parse it, call:
+
+\begin{lstlisting}
+bool glfxParseEffectFromFile(int effect, const char* file);
+\end{lstlisting}
+Which returns whether parsing was successful. \texttt{\textbf{effect}} is the identifier.
+\texttt{\textbf{file}} is a null terminated string of the file to parse, while the path is relative
+to the current path. If parsing was unsuccessful, errors are logged and can be extracted later.
+
+In order to compile a named program from the effect file, use:
+
+\begin{lstlisting}
+int glfxCompileProgram(int effect, const char* program);
+\end{lstlisting}
+Supply \texttt{\textbf{effect}} as the identifier, and \texttt{\textbf{program}} as the null
+terminated string containing the name of the program.
+In case of successful compilation an OpenGL program object is returned. If compilation has failed
+then $-1$ is returned, and errors are logged. Program syntax is discussed in \autoref{sec:programs_def}.
+Once the program is returned, all involved shaders are detached and deleted. This means that relinking
+programs outside of GLFX is impossible.
+
+In order to generate a named sampler, call:
+
+\begin{lstlisting}
+int glfxGenerateSampler(int effect, const char* sampler);
+\end{lstlisting}
+With \texttt{\textbf{effect}} as the identifier and \texttt{\textbf{sampler}} as the null terminated
+string containing the type or the name of the sampler.
+In case of error $-1$ is returned, otherwise an OpenGL sampler object is created and returned.
+Sampler syntax is discussed in \autoref{sec:samplers}.
+
+\subsection{Handling errors}
+The log is accumulated until retrieved by any of the APIs.
+
+A complete error log (since the last retrieval) can be obtained by calling:
+\begin{lstlisting}
+void glfxGetEffectLog(int effect, char* log, int bufSize);
+\end{lstlisting}
+Where \texttt{\textbf{effect}} is the identifier, \texttt{\textbf{log}} is the destination
+string and \texttt{\textbf{bufSize}} is the maximum size of the string.
+
+Alternatively, if C++ is used, a simpler API call is available:
+\begin{lstlisting}
+std::string glfxGetEffectLog(int effect);
+\end{lstlisting}
+Which returns a \texttt{\textbf{std::string}} object.
+
+Currently there are three types of errors:
+\begin{enumerate}
+\item General parsing errors
+\item GLSL errors
+\item Sampler generation errors
+\end{enumerate}
+
+\subsubsection{General parsing errors}
+These errors are produced by GLFX. They occur during parsing of the effect file, usually when
+a syntactic or a semantic error is encountered in GLFX specific code.
+For the sake of simplicity GLFX avoids parsing things outside of its scope.
+This means that GLFX cannot detect errors in GLSL code during initial parsing.
+
+\emph{Note: GLFX's error reporting mechanism is currently limited. If an error was encountered
+during parsing, the log won't be very informative. The only information that's currently supplied
+is the type of the error. However, the reported line number is correct.}
+
+\subsubsection{GLSL errors}
+These errors (and warnings) are generated during compilation (and linkage). Their quality depends on
+the GLSL compiler. The line numbers are in the effect file when $(0)$ is prefixed. When $(i)$
+is prefixed then the error has occurred in the $i$'th header file.
+
+\subsubsection{Sampler generation errors}
+These errors occur when sampler generation was failed. This happens usually due to incorrect
+parameter in the effect file (in the sampler definition).
+
+\pagebreak
+\section{Effect files}\label{sec:effFiles}
+Effect files are essentially a collection of shaders, helper functions, various structures, header
+includes, sampler definitions and program definitions.
+
+\subsection{Shader entry point}
+In contrast to plain GLSL, where the entry point is the rigid \texttt{\textbf{main}}, an effect
+file can define multiple entry points. Each such entry point is a function of the type
+\emph{shader}, with a parameter list and optional register definitions. For example:
+\begin{lstlisting}
+shader MyVertexShader(in vec4 lPos:0)
+{
+	gl_Position=mPVW*lPos;
+}
+\end{lstlisting}
+Here we define a vertex shader with \texttt{\textbf{lPos}} as the vertex input position, which is located
+in register $0$. As per GLSL spec, supplying register numbers is completely optional. However, it's
+strongly advised to do so when linking separable programs (discussed in \autoref{sec:programs_def}).
+
+\subsection{Interfaces}
+The interface mechanism connects different programmable stages. While not
+strictly required to connect stages, it's the advised way to do so since
+it gives the programmer more control than structures. This is especially important for separable
+programs.
+
+Here is an example of how to use interfaces:
+\begin{lstlisting}
+sampler2DArray texArray;
+uniform mat4 mPVW;
+
+interface VStoFS {
+	layout(location=0) vec2 texC;
+	layout(location=1) flat int sampleTex;
+};
+
+shader MyVS(in vec4 lPos:0, in vec2 texC:1, in int sampleTex:2, out VStoFS outputs)
+{
+	gl_Position=mPVW*lPos;
+	outputs.texC=texC;
+	outputs.sampleTex=sampleTex;
+}
+
+shader MyFS(in VStoFS inputs, out vec4 fCol:0)
+{
+	vec3 texC(inputs.texC, inputs.sampleTex);
+	fCol=texture(texArray, texC);
+}
+\end{lstlisting}
+
+There's a secondary value to using the interface mechanism. Currently GLFX still doesn't
+support all qualifiers if passed in the parameter line, but inside interface there are no restrictions
+since it's not parsed by GLFX, but rather passed directly to GLSL compiler. Though this
+will be fixed in future releases. Also, interface blocks will be parsed as well in order to
+simplify layout specification.
+
+\subsection{Program definition}\label{sec:programs_def}
+In order to combine all stages into a single program a definition should be made for the
+\texttt{\textbf{glfx\-Compile\-Program}} API to recognize the program. This is done by declaring
+what shader corresponds to what stage. In case of non-separable programs
+the \texttt{\textbf{program}} keyword should be used as follows:
+
+\begin{lstlisting}
+program MyProgram {
+	vs(430)=MyVS();
+	fs(430)=MyFS();
+};
+\end{lstlisting}
+
+The possible stages are: \texttt{\textbf{vs,hs,ds,gs,fs,cs}}; for Vertex, Hull, Domain, Geometry, Fragment
+and Compute shaders, respectively. The numbering in the parenthesis specifies the GLSL
+version to compile against.
+
+In order to link separable program use the keyword \texttt{\textbf{stages}} instead of
+\texttt{\textbf{program}}.
+
+In order to specify layout qualifiers, use \texttt{\textbf{in}} and \texttt{\textbf{out}} keywords
+as follows:
+\begin{lstlisting}
+stages MyGeometry {
+	gs(430)=MyGS()
+	: in(triangles_adjacency, invocations=6)
+	, out(triangle_strip, max_vertices=18, stream=1);
+};
+\end{lstlisting}
+
+\pagebreak
+\section{Headers}
+GLFX has a preliminary support for header files with. The usage is just like in C++ source
+code:
+\begin{lstlisting}
+#include "myheader.h"
+\end{lstlisting}
+
+GLFX doesn't actually parses the header files, it just glues them to the source. Hence nested
+includes aren't supported.
+
+\subsection{Sharing code with C++}
+In order to share code between shaders and C++, predefined constants can be used as follows:
+\begin{lstlisting}
+#ifndef _MY_SHARED_HEADER_H
+#define _MY_SHARED_HEADER_H
+
+// shared code here
+
+#ifndef __TIMESTAMP__
+
+// GLSL code here
+
+// __TIMESTAMP__
+#endif
+// _MY_SHARED_HEADER_H
+#endif
+\end{lstlisting}
+
+\texttt{\textbf{\_\_TIMESTAMP\_\_}} is a good example of a compiler constant which isn't defined by GLSL.
+It's safe to use as long as OpenGL won't specify file input.
+This mechanism is convenient for shared constants, and especially for input register numbers.
+
+\subsection{Errors in headers}
+If an error is occurred in the header file during GLSL compilation, the line number
+will be the line number in the header, prefixed (or postfixed) by $(i)$ for the $i$'th
+included header.
+
+\pagebreak
+\section{Samplers}\label{sec:samplers}
+
+A sampler is defined by the following syntax:
+\begin{lstlisting}
+sampler MySamplerName {
+	state1 = value1;
+	state2 = value2;
+	// ...
+} MyTexture1:0, MyTexture2:1;
+\end{lstlisting}
+Sampler's name is used by the API to retrieve the sampler. Texture names are used in the shader
+as regular texture units with the specified binding points.
+State values determine the sampler and the texture units.
+
+\subsection{Images}
+In order to use images, just replace the \texttt{\textbf{sampler}} keyword with \texttt{\textbf{image}}
+keyword.
+
+\subsection{Selecting the texture type}
+The type of the texture can be anything that is defined in the GLSL spec and is specified with
+the following state values:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+Description & State keyword & State values & Default value\\
+\hline\hline
+Dimension & \texttt{\textbf{Dim}} & 1,2,3, Cube, Buffer & 2\\
+\hline
+Is array & \texttt{\textbf{Array}} & 0,1 & 0\\
+\hline
+Is multisampled & \texttt{\textbf{MS}} & 0,1 & 0\\
+\hline
+Is rectangle & \texttt{\textbf{Rect}} & 0,1 & 0\\
+\hline
+Format & \texttt{\textbf{Format}} & float, int, uint & float\\
+\hline
+\end{tabular}
+\caption{Texture types}
+\label{tab:texTypes}
+\end{table}
+
+\subsection{Selecting filtering modes}
+The following filtering modes are available:
+\begin{table}[h]
+\centering
+\begin{tabulary}{\linewidth}{|C|C|C|C|}
+\hline
+Description & State keyword & State values & Default value\\
+\hline\hline
+Minifying filter & \texttt{\textbf{MinFilter}} & point, linear, nearest, bilinear, trilinear & bilinear\\
+\hline
+Magnifying filter & \texttt{\textbf{MagFilter}} & point, nearest, linear, bilinear & linear\\
+\hline
+Anisotropic filter & \texttt{\textbf{Aniso}} & Anisotropy integer value & 1\\
+\hline
+\end{tabulary}
+\caption{Filtering modes}
+\label{tab:filtModes}
+\end{table}
+There's some redundancy in this table, since magnifying filters can be only linear or nearest,
+but in order to supply more consistency with minifying filters, point and bilinear were inserted
+as well. They still correspond to nearest and linear, respectively.
+
+The minifying filter state value \texttt{\textbf{point}} corresponds to \texttt{\textbf{GL\_\-NEAREST}},
+while \texttt{\textbf{nearest}} corresponds to \texttt{\textbf{GL\_\-NEAREST\_\-MIPMAP\_\-NEAREST}}.
+
+\subsection{Coordinates state}
+The following coordinates state modes are available:
+\begin{table}[h]
+\centering
+\begin{tabulary}{\linewidth}{|C|C|C|C|}
+\hline
+Description & State keyword & State values & Default value\\
+\hline\hline
+Wrapping & \texttt{\textbf{WrapS, WrapT, WrapR}} &
+repeat, mirroredRepeat, clampToEdge, clampToBorder & repeat\\
+\hline
+LOD margins & \texttt{\textbf{MinLod, MaxLod}} & $\in\slp-1000,1000\srp$ & $-1000$, $1000$\\
+\hline
+LOD bias & \texttt{\textbf{LodBias}} & Restricted to GL\_MAX\_TEXTURE\_LOD\_BIAS & 0\\
+\hline
+\end{tabulary}
+\caption{Coordinates states}
+\label{tab:coordModes}
+\end{table}
+
+\subsection{Comparison sampling}
+When sampling from depth textures it's possible to let the hardware do the comparison.
+The corresponding state values are:
+\begin{table}[h]
+\centering
+\begin{tabulary}{\linewidth}{|C|C|C|C|}
+\hline
+Description & State keyword & State values & Default value\\
+\hline\hline
+Mode & \texttt{\textbf{CmpMode}} & none, ref & none\\
+\hline
+Compare function & \texttt{\textbf{CmpFunc}} &
+lequal, gequal, less, greater, equal, notequal, always, never & lequal\\
+\hline
+\end{tabulary}
+\caption{Comparison sampling state}
+\label{tab:compModes}
+\end{table}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
