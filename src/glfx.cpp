@@ -218,7 +218,7 @@ Sampler::Sampler()
     m_stringParams["WrapS"]="repeat";
     m_stringParams["WrapT"]="repeat";
     m_stringParams["WrapR"]="repeat";
-    m_stringParams["MinFilter"]="bilinear";
+    m_stringParams["MinFilter"]="trilinear";
     m_stringParams["MagFilter"]="linear";
     m_stringParams["Format"]="float";
     m_stringParams["Type"]="sampler";
