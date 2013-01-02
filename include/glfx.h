@@ -43,6 +43,15 @@ int glfxGenEffect();
 bool glfxParseEffectFromFile( int effect, const char* file );
 
 /**************************************************
+* glfxCreateEffectFromMemory
+* Input:
+*   effect  -- GLFX effect id
+*   src    -- Source
+* Return value: Status
+**************************************************/
+bool glfxParseEffectFromMemory( int effect, const char* src );
+
+/**************************************************
 * glfxCompileProgram
 * Input:
 *   effect  -- GLFX effect id

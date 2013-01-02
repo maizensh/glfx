@@ -415,6 +415,51 @@ bool glfxParseEffectFromFile( int effect, const char* file )
     return retVal;
 }
 
+bool glfxParseEffectFromMemory( int effect, const char* src )
+{
+    bool retVal=true;
+
+    // We have to use a hack in order to use a char string as a file handle.
+    // This method is limited to the pipe buffer size which is normally 64 KB on most systems.
+    int fstr[2];
+    pipe(fstr);
+    write(fstr[1], src, strlen(src));
+    close(fstr[1]);
+    glfxin = fdopen( fstr[0], "r" );
+
+    if(glfxin==NULL) {
+        gEffects[effect]->Log()<<"Source is invalid"<<endl;
+        gEffects[effect]->Active()=false;
+        return false;
+    }
+    try {
+        gEffect=gEffects[effect];
+        gEffect->Dir()="";
+
+        glfxrestart(glfxin);
+        glfxset_lineno(1);
+        glfxparse();
+    }
+    catch(const char* err) {
+        gEffect->Log()<<err<<endl;
+        gEffect->Active()=false;
+        retVal=false;
+    }
+    catch(const string& err) {
+        gEffect->Log()<<err<<endl;
+        gEffect->Active()=false;
+        retVal=false;
+    }
+    catch(...) {
+        gEffect->Log()<<"Unknown error occurred during parsing of source"<<endl;
+        gEffect->Active()=false;
+        retVal=false;
+    }
+
+    fclose(glfxin);
+    return retVal;
+}
+
 void glfxDeleteEffect(int effect)
 {
     if((size_t)effect<gEffects.size() && gEffects[effect]!=NULL) {
