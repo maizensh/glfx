@@ -110,6 +110,7 @@ public:
     unsigned BuildProgram(const string& prog, string& log) const;
     unsigned BuildProgram(const string& prog) const;
     unsigned CreateSampler(const string& sampler) const;
+    unsigned GetProgramList(vector<char*>& list) const;
     bool& Active();
     string& Dir();
     ~Effect();

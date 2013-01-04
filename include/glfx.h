@@ -52,6 +52,16 @@ bool glfxParseEffectFromFile( int effect, const char* file );
 bool glfxParseEffectFromMemory( int effect, const char* src );
 
 /**************************************************
+* glfxGetProgramList
+* Input:
+*   effect  -- GLFX effect id
+*   progList -- List of programs
+*   cound -- Number of programs
+* Return value: GL program id if success, -1 otherwise
+**************************************************/
+int glfxGetProgramList(int effect, char**& progList, int* count);
+
+/**************************************************
 * glfxCompileProgram
 * Input:
 *   effect  -- GLFX effect id

@@ -69,6 +69,12 @@ int fopen_s(FILE** pFile, const char *filename, const char *mode)
     return errno;
 }
 
+int fdopen_s(FILE** pFile, int fildes, const char *mode)
+{
+    *pFile = fdopen(fildes, mode);
+    return errno;
+}
+
 #endif
 
 Effect *gEffect=NULL;
@@ -212,6 +218,11 @@ unsigned Effect::CreateSampler(const string& sampler) const
     return it->second->CreateSamplerObject();
 }
 
+unsigned Effect::GetProgramList(vector<char*>& list) const
+{
+    for(map<string,Program*>::const_iterator it=m_programs.begin(); it!=m_programs.end(); ++it)
+        list.push_back( (char*)it->first.c_str() );
+}
 
 Sampler::Sampler()
 {
@@ -419,13 +430,12 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
 {
     bool retVal=true;
 
-    // We have to use a hack in order to use a char string as a file handle.
-    // This method is limited to the pipe buffer size which is normally 64 KB on most systems.
+    // On most systems pipe has a 64KB limit but no less than 16KB.
     int fstr[2];
     pipe(fstr);
     write(fstr[1], src, strlen(src));
     close(fstr[1]);
-    glfxin = fdopen( fstr[0], "r" );
+    fdopen_s( &glfxin, fstr[0], "r" );
 
     if(glfxin==NULL) {
         gEffects[effect]->Log()<<"Source is invalid"<<endl;
@@ -487,6 +497,25 @@ string glfxGetEffectLog(int effect)
     string log=gEffects[effect]->Log().str();
     gEffects[effect]->Log().str("");
     return log;
+}
+
+int glfxGetProgramList(int effect, char**& progList, int* count)
+                               //        ^  pass by reference
+{
+    // This function is not pretty at all
+
+    static std::vector<char*> list; // Static makes the list last past the end of the function.
+    list.clear();                   // Now we have to clear it each time we call to make sure
+                                    // that old results do not pollute the list.
+
+    gEffects[effect]->GetProgramList(list); // Get list of programs.
+
+    progList = &list[0];       // Value now passed correctly
+                               // back to the calling function
+                               // and list will still exist.
+
+    int size = list.size();
+    memcpy(count, &size, sizeof(int));  // This copies the number of items in the list out
 }
 
 int glfxCompileProgram(int effect, const char* program)
