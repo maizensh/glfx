@@ -62,12 +62,19 @@ int glfxCompileProgram(int effect, const char* program);
 
 /**************************************************
 * glfxGetProgramList
+* Return value: Number of programs
+**************************************************/
+int glfxGetProgramCount(int effect);
+
+/**************************************************
+* glfxGetProgramByIndex
 * Input:
 *   effect  -- GLFX effect id
-*   strArray -- List of programs
-*   maxElems -- Number of programs
+*   program -- Index of program
+*   name    -- Destination address
+*   bufSize -- Size of the buffer
 **************************************************/
-void glfxGetProgramList(int effect, char** strArray, int maxElems);
+void glfxGetProgramName(int effect, int program, char* name, int bufSize);
 
 /**************************************************
 * glfxGenerateSampler
@@ -96,10 +103,8 @@ void glfxDeleteEffect(int effect);
 
 }
 
-
 #ifdef __cplusplus
 
-#include <vector>
 #include <string>
 /**************************************************
 * glfxGetEffectLog
@@ -108,12 +113,4 @@ void glfxDeleteEffect(int effect);
 * Return value: Log string
 **************************************************/
 std::string glfxGetEffectLog(int effect);
-
-/**************************************************
-* glfxGetProgramList
-* Input:
-*   effect  -- GLFX effect id
-* Return value: List of programs
-**************************************************/
-std::vector<std::string> glfxGetProgramList(int effect);
 #endif

@@ -23,7 +23,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-#include <algorithm>
 #include <map>
 #include <string>
 #include <cstring>
@@ -519,6 +518,20 @@ vector<string> glfxGetProgramList(int effect)
     vector<string> progList;
     gEffects[effect]->GetProgramList(progList);
     return progList;
+}
+
+int glfxGetProgramCount(int effect)
+{
+    vector<string> tmpList;
+    gEffects[effect]->GetProgramList(tmpList);
+    return tmpList.size();
+}
+
+void glfxGetProgramName(int effect, int program, char* name, int bufSize)
+{
+    vector<string> tmpList;
+    gEffects[effect]->GetProgramList(tmpList);
+    strcpy_s(name, bufSize, tmpList[program].c_str());
 }
 
 int glfxCompileProgram(int effect, const char* program)
