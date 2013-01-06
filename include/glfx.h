@@ -61,13 +61,13 @@ bool glfxParseEffectFromMemory( int effect, const char* src );
 int glfxCompileProgram(int effect, const char* program);
 
 /**************************************************
-* glfxGetProgramList
+* glfxGetProgramCount
 * Return value: Number of programs
 **************************************************/
 int glfxGetProgramCount(int effect);
 
 /**************************************************
-* glfxGetProgramByIndex
+* glfxGetProgramName
 * Input:
 *   effect  -- GLFX effect id
 *   program -- Index of program

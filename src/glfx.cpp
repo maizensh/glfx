@@ -499,27 +499,6 @@ string glfxGetEffectLog(int effect)
     return log;
 }
 
-void glfxGetProgramList(int effect, char** strArray, int maxElems)
-{
-    static char tmpBuff[4096];
-    int tmpBuffSize=4095;
-    vector<string> tmpList;
-    gEffects[effect]->GetProgramList(tmpList);
-    maxElems = tmpList.size();
-    for(int i, curPos = 0; i < maxElems; i++, curPos += tmpList[i].size())
-    {
-        strcpy_s(&tmpBuff[curPos], tmpBuffSize, tmpList[i].c_str());
-        strArray[i]=&tmpBuff[curPos];
-    }
-}
-
-vector<string> glfxGetProgramList(int effect)
-{
-    vector<string> progList;
-    gEffects[effect]->GetProgramList(progList);
-    return progList;
-}
-
 int glfxGetProgramCount(int effect)
 {
     vector<string> tmpList;
