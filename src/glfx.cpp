@@ -23,7 +23,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
-
+#include <algorithm>
 #include <map>
 #include <string>
 #include <cstring>
@@ -218,10 +218,11 @@ unsigned Effect::CreateSampler(const string& sampler) const
     return it->second->CreateSamplerObject();
 }
 
-unsigned Effect::GetProgramList(vector<char*>& list) const
+void Effect::GetProgramList(vector<string>& list)
 {
+    list.clear();
     for(map<string,Program*>::const_iterator it=m_programs.begin(); it!=m_programs.end(); ++it)
-        list.push_back( (char*)it->first.c_str() );
+        list.push_back( it->first );
 }
 
 Sampler::Sampler()
@@ -499,23 +500,25 @@ string glfxGetEffectLog(int effect)
     return log;
 }
 
-int glfxGetProgramList(int effect, char**& progList, int* count)
-                               //        ^  pass by reference
+void glfxGetProgramList(int effect, char** strArray, int maxElems)
 {
-    // This function is not pretty at all
+    static char tmpBuff[4096];
+    int tmpBuffSize=4095;
+    vector<string> tmpList;
+    gEffects[effect]->GetProgramList(tmpList);
+    maxElems = tmpList.size();
+    for(int i, curPos = 0; i < maxElems; i++, curPos += tmpList[i].size())
+    {
+        strcpy_s(&tmpBuff[curPos], tmpBuffSize, tmpList[i].c_str());
+        strArray[i]=&tmpBuff[curPos];
+    }
+}
 
-    static std::vector<char*> list; // Static makes the list last past the end of the function.
-    list.clear();                   // Now we have to clear it each time we call to make sure
-                                    // that old results do not pollute the list.
-
-    gEffects[effect]->GetProgramList(list); // Get list of programs.
-
-    progList = &list[0];       // Value now passed correctly
-                               // back to the calling function
-                               // and list will still exist.
-
-    int size = list.size();
-    memcpy(count, &size, sizeof(int));  // This copies the number of items in the list out
+vector<string> glfxGetProgramList(int effect)
+{
+    vector<string> progList;
+    gEffects[effect]->GetProgramList(progList);
+    return progList;
 }
 
 int glfxCompileProgram(int effect, const char* program)
