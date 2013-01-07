@@ -422,6 +422,7 @@ bool glfxParseEffectFromFile( int effect, const char* file )
         retVal=false;
     }
 
+    glfxpop_buffer_state();
     fclose(glfxin);
     return retVal;
 }
@@ -429,13 +430,6 @@ bool glfxParseEffectFromFile( int effect, const char* file )
 bool glfxParseEffectFromMemory( int effect, const char* src )
 {
     bool retVal=true;
-
-    // On most systems pipe has a 64KB limit but no less than 16KB.
-    int fstr[2];
-    pipe(fstr);
-    write(fstr[1], src, strlen(src));
-    close(fstr[1]);
-    fdopen_s( &glfxin, fstr[0], "r" );
 
     if(glfxin==NULL) {
         gEffects[effect]->Log()<<"Source is invalid"<<endl;
@@ -446,7 +440,7 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
         gEffect=gEffects[effect];
         gEffect->Dir()="";
 
-        glfxrestart(glfxin);
+        glfx_scan_string(src);
         glfxset_lineno(1);
         glfxparse();
     }
@@ -466,6 +460,7 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
         retVal=false;
     }
 
+    glfxpop_buffer_state();
     fclose(glfxin);
     return retVal;
 }
@@ -503,7 +498,7 @@ int glfxGetProgramCount(int effect)
 {
     vector<string> tmpList;
     gEffects[effect]->GetProgramList(tmpList);
-    return tmpList.size();
+    return (int)tmpList.size();
 }
 
 void glfxGetProgramName(int effect, int program, char* name, int bufSize)

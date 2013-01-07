@@ -24,8 +24,8 @@
     #endif
 
     #ifdef _M_X64
-    // flex is incompatible with x64
-    // it makes some casts from pointers to integers and from size_t to integers
+    // flex is (still) incompatible with x64
+    // it makes some casts from pointers to integers (pointer casts seem to be fixed in the latest version) and from size_t to integers
     // it should work though, nothing too serious
     #pragma warning( disable:4267 )
     #pragma warning( disable:4244 )

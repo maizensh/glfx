@@ -13,7 +13,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 35
+#define YY_FLEX_SUBMINOR_VERSION 37
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -58,7 +58,6 @@ typedef int flex_int32_t;
 typedef unsigned char flex_uint8_t; 
 typedef unsigned short int flex_uint16_t;
 typedef unsigned int flex_uint32_t;
-#endif /* ! C99 */
 
 /* Limits of integral types. */
 #ifndef INT8_MIN
@@ -88,6 +87,8 @@ typedef unsigned int flex_uint32_t;
 #ifndef UINT32_MAX
 #define UINT32_MAX             (4294967295U)
 #endif
+
+#endif /* ! C99 */
 
 #endif /* ! FLEXINT_H */
 
@@ -122,14 +123,14 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int glfxleng;
-
-extern FILE *glfxin, *glfxout;
-
 #ifndef YY_TYPEDEF_YY_SIZE_T
 #define YY_TYPEDEF_YY_SIZE_T
 typedef size_t yy_size_t;
 #endif
+
+extern yy_size_t glfxleng;
+
+extern FILE *glfxin, *glfxout;
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -148,7 +149,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	int yy_n_chars;
+	yy_size_t yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -192,7 +193,7 @@ void glfxpop_buffer_state (void );
 
 YY_BUFFER_STATE glfx_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE glfx_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE glfx_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE glfx_scan_bytes (yyconst char *bytes,yy_size_t len  );
 
 void *glfxalloc (yy_size_t  );
 void *glfxrealloc (void *,yy_size_t  );
@@ -200,7 +201,7 @@ void glfxfree (void *  );
 
 /* Begin user sect3 */
 
-#define glfxwrap(n) 1
+#define glfxwrap() 1
 #define YY_SKIP_YYWRAP
 
 extern int glfxlineno;
@@ -246,7 +247,7 @@ FILE *glfxget_out (void );
 
 void glfxset_out  (FILE * out_str  );
 
-int glfxget_leng (void );
+yy_size_t glfxget_leng (void );
 
 char *glfxget_text (void );
 
@@ -316,6 +317,6 @@ extern int glfxlex (void);
 #line 95 "glfx.lpp"
 
 
-#line 320 "glfxScanner.h"
+#line 321 "glfxScanner.h"
 #undef glfxIN_HEADER
 #endif /* glfxHEADER_H */
