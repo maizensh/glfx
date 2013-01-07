@@ -123,8 +123,8 @@ uniform,mat4,program,vs,fs,stages,sampler},
 \newcommand{\tr}{\operatorname{tr}}
 
 \begin{document}
-\title{GLFX 0.6}
-\author{Max Eisenstein\\Etay Meiri}
+\title{GLFX 0.65}
+\author{Max Eisenstein\\Etay Meiri\\Steven Batchelor}
 \date{\today}
 \maketitle
 
@@ -183,27 +183,33 @@ Effect objects are associated with effect files (which will be discussed in \aut
 which hold all the information required to compile and link programs.
 
 In order to generate an effect object, call:
-
 \begin{lstlisting}
 int glfxGenEffect();
 \end{lstlisting}
 The return value is the identifier of the effect object.
 
 In order to delete effect object, call:
-
 \begin{lstlisting}
 void glfxDeleteEffect(int effect);
 \end{lstlisting}
 With \texttt{\textbf{effect}} as the identifier of the effect.
 
 In order to attach an effect file and to parse it, call:
-
 \begin{lstlisting}
 bool glfxParseEffectFromFile(int effect, const char* file);
 \end{lstlisting}
 Which returns whether parsing was successful. \texttt{\textbf{effect}} is the identifier.
 \texttt{\textbf{file}} is a null terminated string of the file to parse, while the path is relative
 to the current path. If parsing was unsuccessful, errors are logged and can be extracted later.
+
+In order to parse an effect directly from memory call:
+\begin{lstlisting}
+bool glfxParseEffectFromMemory(int effect, const char* src);
+\end{lstlisting}
+Which returns whether parsing was successful. \texttt{\textbf{effect}} is the identifier.
+\texttt{\textbf{src}} is a null terminated string of the effect source to be parsed,
+while the path (for include files) is set to be relative to the current working directory.
+If parsing was unsuccessful, errors are logged and can be extracted later.
 
 In order to compile a named program from the effect file, use:
 
@@ -226,6 +232,28 @@ With \texttt{\textbf{effect}} as the identifier and \texttt{\textbf{sampler}} as
 string containing the type or the name of the sampler.
 In case of error $-1$ is returned, otherwise an OpenGL sampler object is created and returned.
 Sampler syntax is discussed in \autoref{sec:samplers}.
+
+\subsection{Obtaining program names}
+A user can obtain names of programs that are found in the effect file by using the following API.
+
+In order to obtain the amount of programs in the effect call:
+\begin{lstlisting}
+int glfxGetProgramCount(int effect);
+\end{lstlisting}
+
+Program names can be obtained by an index, with C API as follows:
+\begin{lstlisting}
+void glfxGetProgramName(int effect, int programIndex, char* name, int bufSize);
+\end{lstlisting}
+Where \texttt{\textbf{effect}} is the identifier, \texttt{\textbf{programIndex}} is the index of
+the desired program, \texttt{\textbf{name}} is the destination
+string and \texttt{\textbf{bufSize}} is the maximum size of the string.
+
+Another, C++ API, is exposed as well:
+\begin{lstlisting}
+std::string glfxGetProgramName(int effect, int programIndex);
+\end{lstlisting}
+Which returns a \texttt{\textbf{std::string}} object.
 
 \subsection{Handling errors}
 The log is accumulated until retrieved by any of the APIs.
