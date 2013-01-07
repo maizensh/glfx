@@ -89,6 +89,7 @@ public:
 
 class Effect {
     map<string, Program*>   m_programs;
+    vector<string>          m_programNames;
     map<string, Sampler*>   m_samplers;
     map<string, string>     m_shaders;
     struct InterfaceDcl {
@@ -110,7 +111,8 @@ public:
     unsigned BuildProgram(const string& prog, string& log) const;
     unsigned BuildProgram(const string& prog) const;
     unsigned CreateSampler(const string& sampler) const;
-    void GetProgramList(vector<string>& list);
+    const vector<string>& GetProgramList() const;
+    void PopulateProgramList();
     bool& Active();
     string& Dir();
     ~Effect();

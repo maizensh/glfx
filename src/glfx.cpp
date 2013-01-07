@@ -217,11 +217,16 @@ unsigned Effect::CreateSampler(const string& sampler) const
     return it->second->CreateSamplerObject();
 }
 
-void Effect::GetProgramList(vector<string>& list)
+const vector<string>& Effect::GetProgramList() const
 {
-    list.clear();
+    return m_programNames;
+}
+
+void Effect::PopulateProgramList()
+{
+    m_programNames.clear();
     for(map<string,Program*>::const_iterator it=m_programs.begin(); it!=m_programs.end(); ++it)
-        list.push_back( it->first );
+        m_programNames.push_back(it->first);
 }
 
 Sampler::Sampler()
@@ -424,6 +429,8 @@ bool glfxParseEffectFromFile( int effect, const char* file )
 
     glfxpop_buffer_state();
     fclose(glfxin);
+
+    gEffect->PopulateProgramList();
     return retVal;
 }
 
@@ -462,6 +469,8 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
 
     glfxpop_buffer_state();
     fclose(glfxin);
+
+    gEffect->PopulateProgramList();
     return retVal;
 }
 
@@ -496,16 +505,23 @@ string glfxGetEffectLog(int effect)
 
 int glfxGetProgramCount(int effect)
 {
-    vector<string> tmpList;
-    gEffects[effect]->GetProgramList(tmpList);
-    return (int)tmpList.size();
+    return (int)gEffects[effect]->GetProgramList().size();
 }
 
 void glfxGetProgramName(int effect, int program, char* name, int bufSize)
 {
-    vector<string> tmpList;
-    gEffects[effect]->GetProgramList(tmpList);
+    const vector<string>& tmpList = gEffects[effect]->GetProgramList();
+    if(program > tmpList.size())
+        return;
     strcpy_s(name, bufSize, tmpList[program].c_str());
+}
+
+string glfxGetProgramName(int effect, int program)
+{
+    const vector<string>& tmpList = gEffects[effect]->GetProgramList();
+    if(program > tmpList.size())
+        return string();
+    return tmpList[program];
 }
 
 int glfxCompileProgram(int effect, const char* program)

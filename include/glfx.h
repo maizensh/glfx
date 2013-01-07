@@ -113,4 +113,13 @@ void glfxDeleteEffect(int effect);
 * Return value: Log string
 **************************************************/
 std::string glfxGetEffectLog(int effect);
+
+/**************************************************
+* glfxGetProgramName
+* Input:
+*   effect  -- GLFX effect id
+*   program -- Index of program
+**************************************************/
+std::string glfxGetProgramName(int effect, int program);
+
 #endif
