@@ -437,16 +437,9 @@ bool glfxParseEffectFromFile( int effect, const char* file )
 bool glfxParseEffectFromMemory( int effect, const char* src )
 {
     bool retVal=true;
-
-    if(glfxin==NULL) {
-        gEffects[effect]->Log()<<"Source is invalid"<<endl;
-        gEffects[effect]->Active()=false;
-        return false;
-    }
     try {
         gEffect=gEffects[effect];
         gEffect->Dir()="";
-
         glfx_scan_string(src);
         glfxset_lineno(1);
         glfxparse();
@@ -468,7 +461,6 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
     }
 
     glfxpop_buffer_state();
-    fclose(glfxin);
 
     gEffect->PopulateProgramList();
     return retVal;
