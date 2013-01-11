@@ -39,6 +39,11 @@ typedef int errno_t;
 #include <errno.h>
 #endif
 
+// workaround for Linux distributions that haven't yet upgraded to GLEW 1.9
+#ifndef GL_COMPUTE_SHADER
+#define GL_COMPUTE_SHADER 0x91B9
+#endif
+
 #include "glfx.h"
 #include "glfxClasses.h"
 #include "glfxParser.h"
@@ -503,7 +508,7 @@ int glfxGetProgramCount(int effect)
 void glfxGetProgramName(int effect, int program, char* name, int bufSize)
 {
     const vector<string>& tmpList = gEffects[effect]->GetProgramList();
-    if(program > tmpList.size())
+    if(program > (int)tmpList.size())
         return;
     strcpy_s(name, bufSize, tmpList[program].c_str());
 }
@@ -511,7 +516,7 @@ void glfxGetProgramName(int effect, int program, char* name, int bufSize)
 string glfxGetProgramName(int effect, int program)
 {
     const vector<string>& tmpList = gEffects[effect]->GetProgramList();
-    if(program > tmpList.size())
+    if(program > (int)tmpList.size())
         return string();
     return tmpList[program];
 }

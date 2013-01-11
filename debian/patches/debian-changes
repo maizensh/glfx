@@ -4,7 +4,7 @@ Description: Undocumented upstream changes
  check the changelog to (hopefully) learn more on those changes.
 
 --- /dev/null
-+++ libglfx-0.52/nbproject/Makefile-Release.mk
++++ libglfx-0.6/nbproject/Makefile-Release.mk
 @@ -0,0 +1,95 @@
 +#
 +# Generated Makefile - do not edit!
@@ -102,7 +102,7 @@ Description: Undocumented upstream changes
 +
 +include .dep.inc
 --- /dev/null
-+++ libglfx-0.52/nbproject/Package-Release.bash
++++ libglfx-0.6/nbproject/Package-Release.bash
 @@ -0,0 +1,75 @@
 +#!/bin/bash -x
 +
@@ -180,7 +180,7 @@ Description: Undocumented upstream changes
 +cd "${TOP}"
 +rm -rf ${NBTMPDIR}
 --- /dev/null
-+++ libglfx-0.52/nbproject/Makefile-Debug.mk
++++ libglfx-0.6/nbproject/Makefile-Debug.mk
 @@ -0,0 +1,95 @@
 +#
 +# Generated Makefile - do not edit!
@@ -278,7 +278,7 @@ Description: Undocumented upstream changes
 +
 +include .dep.inc
 --- /dev/null
-+++ libglfx-0.52/nbproject/configurations.xml
++++ libglfx-0.6/nbproject/configurations.xml
 @@ -0,0 +1,81 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<configurationDescriptor version="79">
@@ -362,7 +362,7 @@ Description: Undocumented upstream changes
 +  </confs>
 +</configurationDescriptor>
 --- /dev/null
-+++ libglfx-0.52/nbproject/Makefile-impl.mk
++++ libglfx-0.6/nbproject/Makefile-impl.mk
 @@ -0,0 +1,133 @@
 +# 
 +# Generated Makefile - do not edit! 
@@ -498,7 +498,7 @@ Description: Undocumented upstream changes
 +	@echo ""
 +
 --- /dev/null
-+++ libglfx-0.52/nbproject/Makefile-variables.mk
++++ libglfx-0.6/nbproject/Makefile-variables.mk
 @@ -0,0 +1,35 @@
 +#
 +# Generated - do not edit!
@@ -536,7 +536,7 @@ Description: Undocumented upstream changes
 +#
 +include nbproject/private/Makefile-variables.mk
 --- /dev/null
-+++ libglfx-0.52/nbproject/Package-Debug.bash
++++ libglfx-0.6/nbproject/Package-Debug.bash
 @@ -0,0 +1,75 @@
 +#!/bin/bash -x
 +
@@ -614,7 +614,7 @@ Description: Undocumented upstream changes
 +cd "${TOP}"
 +rm -rf ${NBTMPDIR}
 --- /dev/null
-+++ libglfx-0.52/nbproject/project.xml
++++ libglfx-0.6/nbproject/project.xml
 @@ -0,0 +1,25 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<project xmlns="http://www.netbeans.org/ns/project/1">
@@ -642,7 +642,7 @@ Description: Undocumented upstream changes
 +    </configuration>
 +</project>
 --- /dev/null
-+++ libglfx-0.52/nbproject/private/private.xml
++++ libglfx-0.6/nbproject/private/private.xml
 @@ -0,0 +1,11 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
@@ -656,7 +656,7 @@ Description: Undocumented upstream changes
 +    </open-files>
 +</project-private>
 --- /dev/null
-+++ libglfx-0.52/nbproject/private/configurations.xml
++++ libglfx-0.6/nbproject/private/configurations.xml
 @@ -0,0 +1,78 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<configurationDescriptor version="79">
@@ -737,7 +737,7 @@ Description: Undocumented upstream changes
 +  </confs>
 +</configurationDescriptor>
 --- /dev/null
-+++ libglfx-0.52/nbproject/private/Makefile-variables.mk
++++ libglfx-0.6/nbproject/private/Makefile-variables.mk
 @@ -0,0 +1,7 @@
 +#
 +# Generated - do not edit!
@@ -747,7 +747,7 @@ Description: Undocumented upstream changes
 +# Debug configuration
 +# Release configuration
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Makefile-Release.mk
++++ libglfx-0.6/glfxc/nbproject/Makefile-Release.mk
 @@ -0,0 +1,83 @@
 +#
 +# Generated Makefile - do not edit!
@@ -833,7 +833,7 @@ Description: Undocumented upstream changes
 +
 +include .dep.inc
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Package-Release.bash
++++ libglfx-0.6/glfxc/nbproject/Package-Release.bash
 @@ -0,0 +1,75 @@
 +#!/bin/bash -x
 +
@@ -911,7 +911,7 @@ Description: Undocumented upstream changes
 +cd "${TOP}"
 +rm -rf ${NBTMPDIR}
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Makefile-Debug.mk
++++ libglfx-0.6/glfxc/nbproject/Makefile-Debug.mk
 @@ -0,0 +1,87 @@
 +#
 +# Generated Makefile - do not edit!
@@ -1001,7 +1001,7 @@ Description: Undocumented upstream changes
 +
 +include .dep.inc
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/configurations.xml
++++ libglfx-0.6/glfxc/nbproject/configurations.xml
 @@ -0,0 +1,78 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<configurationDescriptor version="79">
@@ -1082,7 +1082,7 @@ Description: Undocumented upstream changes
 +  </confs>
 +</configurationDescriptor>
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Makefile-impl.mk
++++ libglfx-0.6/glfxc/nbproject/Makefile-impl.mk
 @@ -0,0 +1,133 @@
 +# 
 +# Generated Makefile - do not edit! 
@@ -1218,7 +1218,7 @@ Description: Undocumented upstream changes
 +	@echo ""
 +
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Makefile-variables.mk
++++ libglfx-0.6/glfxc/nbproject/Makefile-variables.mk
 @@ -0,0 +1,35 @@
 +#
 +# Generated - do not edit!
@@ -1256,7 +1256,7 @@ Description: Undocumented upstream changes
 +#
 +include nbproject/private/Makefile-variables.mk
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/Package-Debug.bash
++++ libglfx-0.6/glfxc/nbproject/Package-Debug.bash
 @@ -0,0 +1,75 @@
 +#!/bin/bash -x
 +
@@ -1334,7 +1334,7 @@ Description: Undocumented upstream changes
 +cd "${TOP}"
 +rm -rf ${NBTMPDIR}
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/project.xml
++++ libglfx-0.6/glfxc/nbproject/project.xml
 @@ -0,0 +1,27 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<project xmlns="http://www.netbeans.org/ns/project/1">
@@ -1364,7 +1364,7 @@ Description: Undocumented upstream changes
 +    </configuration>
 +</project>
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/private/private.xml
++++ libglfx-0.6/glfxc/nbproject/private/private.xml
 @@ -0,0 +1,11 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
@@ -1378,7 +1378,7 @@ Description: Undocumented upstream changes
 +    </open-files>
 +</project-private>
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/private/configurations.xml
++++ libglfx-0.6/glfxc/nbproject/private/configurations.xml
 @@ -0,0 +1,80 @@
 +<?xml version="1.0" encoding="UTF-8"?>
 +<configurationDescriptor version="79">
@@ -1461,7 +1461,7 @@ Description: Undocumented upstream changes
 +  </confs>
 +</configurationDescriptor>
 --- /dev/null
-+++ libglfx-0.52/glfxc/nbproject/private/Makefile-variables.mk
++++ libglfx-0.6/glfxc/nbproject/private/Makefile-variables.mk
 @@ -0,0 +1,7 @@
 +#
 +# Generated - do not edit!
@@ -1470,25 +1470,3 @@ Description: Undocumented upstream changes
 +#
 +# Debug configuration
 +# Release configuration
---- /dev/null
-+++ libglfx-0.52/msg
-@@ -0,0 +1,19 @@
-+-----BEGIN PGP MESSAGE-----
-+Version: GnuPG v1.4.10 (GNU/Linux)
-+
-+hQEMA6uuhmyrbAclAQgAhRaOAVdseC/Fngs8GzV71ali/o8ar8ww7GtUvByb7nOd
-+P/0T0nSq1VBjNdJcAX2OB9yCIG6pEZEFpAqIMEPu5Lr7i9jdGpBzQVps97hrFNET
-+V5pEIMPPiGxaLK5GqjG6LG3iNgGj1PEVqSKGqZr5cDPlEvxUns/wW8dn7fx0+/9B
-+eIF5CsqvY57v2wX7WLU307mUtZY36ADwebK10wr8aUSxg9vOu2NNVFuEYfN4Vv2B
-+bwydDtNFvJ9Gj94lfc/Do5akox7741ja7beL9N3tuyFzX3qwLTdSLHMF+5LDHD7L
-+75/LMJIZYU4TR0So9NEfxZ+ijeq5kVkLy9yQPa9HNNLAugELi3j6bTKNVwdv1Arj
-+zf6TGW3pvL8Y+1ZhXgmS0/pveN82Lq/sqafOOhqkVbqERQf5Ld6mBxcW1bqn3CBI
-+iq0vNdj3lEIbsiwHijHRGCNoT9qANqSH9c+xyX5TWTUicImSMPqRYjFgwiuUKqIn
-+oy+HttQkyBaWNjG+sUL+ibkyx+WzUpPZ0UK+I8AYcqEZsUzPMpVKMahfcF/n5ZZj
-+cVuZV1/CouYOVAaiHd5sQ4dJ+pb9O7Z1UpMvBgvLZdad71SPTYArM5H61vKpy6hx
-+NPZ+0Cs8t151SLAwcwwmIcCmgC+J8tt2yWxkGj+8rZsLbNRDqbKEsgyZlCHSVmV7
-+mtil8RvWgaumQlOVkcw/xkroVDoeh6fNYblmFU7ot/zvRH5QrWaC/di7YRa5tA9y
-+i0jUTg1lLYd+w2OMIL8D0em5N2t79PCh2JFARSHmVSaXPv5r0mV08vg4G3SYDb6n
-+UmE0iQMcWAGbjH4/8hAWAjXH6gbHGmGBY7XSig==
-+=8tlI
-+-----END PGP MESSAGE-----
