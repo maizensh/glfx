@@ -1,3 +1,4 @@
 SUBDIRS=. src man
 ACLOCAL_AMFLAGS=-I m4
-include_HEADERS=include/glfx.h
+incdir=$(includedir)/glfx
+dist_inc_HEADERS=include/glfx.h
