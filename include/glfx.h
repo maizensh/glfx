@@ -25,13 +25,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 #pragma once
 
+#ifdef _WIN32
+#  define DLLEXPORT __declspec( dllexport )
+#else
+#  define DLLEXPORT
+#endif
+
 extern "C" {
 
 /**************************************************
 * glfxGenEffect
 * Return value: Effect id
 **************************************************/
-int glfxGenEffect();
+int DLLEXPORT glfxGenEffect();
 
 /**************************************************
 * glfxCreateEffectFromFile
@@ -40,7 +46,7 @@ int glfxGenEffect();
 *   file    -- File name
 * Return value: Status
 **************************************************/
-bool glfxParseEffectFromFile( int effect, const char* file );
+bool DLLEXPORT glfxParseEffectFromFile( int effect, const char* file );
 
 /**************************************************
 * glfxCreateEffectFromMemory
@@ -49,7 +55,7 @@ bool glfxParseEffectFromFile( int effect, const char* file );
 *   src    -- Source
 * Return value: Status
 **************************************************/
-bool glfxParseEffectFromMemory( int effect, const char* src );
+bool DLLEXPORT glfxParseEffectFromMemory( int effect, const char* src );
 
 /**************************************************
 * glfxCompileProgram
@@ -58,13 +64,13 @@ bool glfxParseEffectFromMemory( int effect, const char* src );
 *   program -- Program name
 * Return value: GL program id if success, -1 otherwise
 **************************************************/
-int glfxCompileProgram(int effect, const char* program);
+int DLLEXPORT glfxCompileProgram(int effect, const char* program);
 
 /**************************************************
 * glfxGetProgramCount
 * Return value: Number of programs
 **************************************************/
-int glfxGetProgramCount(int effect);
+int DLLEXPORT glfxGetProgramCount(int effect);
 
 /**************************************************
 * glfxGetProgramName
@@ -74,7 +80,7 @@ int glfxGetProgramCount(int effect);
 *   name    -- Destination address
 *   bufSize -- Size of the buffer
 **************************************************/
-void glfxGetProgramName(int effect, int program, char* name, int bufSize);
+void DLLEXPORT glfxGetProgramName(int effect, int program, char* name, int bufSize);
 
 /**************************************************
 * glfxGenerateSampler
@@ -83,7 +89,7 @@ void glfxGetProgramName(int effect, int program, char* name, int bufSize);
 *   sampler -- Sampler name
 * Return value: GL sampler id if success, -1 otherwise
 **************************************************/
-int glfxGenerateSampler(int effect, const char* sampler);
+int DLLEXPORT glfxGenerateSampler(int effect, const char* sampler);
 
 /**************************************************
 * glfxGetEffectLog
@@ -92,14 +98,14 @@ int glfxGenerateSampler(int effect, const char* sampler);
 *   log     -- Destination address
 *   bufSize -- Size of the buffer
 **************************************************/
-void glfxGetEffectLog(int effect, char* log, int bufSize);
+void DLLEXPORT glfxGetEffectLog(int effect, char* log, int bufSize);
 
 /**************************************************
 * glfxDeleteEffect
 * Input:
 *   effect  -- GLFX effect id
 **************************************************/
-void glfxDeleteEffect(int effect);
+void DLLEXPORT glfxDeleteEffect(int effect);
 
 }
 
@@ -112,7 +118,7 @@ void glfxDeleteEffect(int effect);
 *   effect  -- GLFX effect id
 * Return value: Log string
 **************************************************/
-std::string glfxGetEffectLog(int effect);
+std::string DLLEXPORT glfxGetEffectLog(int effect);
 
 /**************************************************
 * glfxGetProgramName
@@ -120,6 +126,6 @@ std::string glfxGetEffectLog(int effect);
 *   effect  -- GLFX effect id
 *   program -- Index of program
 **************************************************/
-std::string glfxGetProgramName(int effect, int program);
+std::string DLLEXPORT glfxGetProgramName(int effect, int program);
 
 #endif

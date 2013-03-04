@@ -2,39 +2,44 @@ cmake_minimum_required(VERSION 2.8.7)
 
 project(glfx)
 
-set(LIBRARY_OUTPUT_PATH ".lib")
-set(CMAKE_DEBUG_POSTFIX "_d")
+FILE( GLOB GRAMMAR_FILES
+"glfx.ypp"
+"glfx.lpp"
+)
+SOURCE_GROUP( "Grammar Files" FILES ${GRAMMAR_FILES} )
+
+FILE( GLOB HEADER_FILES
+"../include/glfx.h"
+"glfxClasses.h"
+"glfxParser.h"
+"glfxScanner.h"
+"glfxLALRParser.hpp"
+)
+SOURCE_GROUP( "Header Files" FILES ${HEADER_FILES} )
+
+FILE( GLOB SOURCE_FILES
+"glfx.cpp"
+"glfxLALRParser.cpp"
+"glfxScanner.cpp"
+)
+SOURCE_GROUP( "Source Files" FILES ${SOURCE_FILES} )
 
 IF(WIN32)
-    include_directories(
-    "${GLEW_DIR}/include"
-	"./../include")
-
-    link_directories(
-    "${GLEW_DIR}/lib")
+    include_directories( "./../glew/include" "./../include" )
+    link_directories( "./../glew/lib" )
 ELSEIF(UNIX)
     include_directories( "./../include" )
 ENDIF(WIN32)
 
-add_library( glfx SHARED
-"../include/glfx.h"
-"glfx.ypp"
-"glfxClasses.h"
-"glfxParser.h"
-"glfxScanner.h"
-"glfx.cpp"
-"glfxLALRParser.cpp"
-"glfxScanner.cpp")
+add_library( glfx SHARED ${GRAMMAR_FILES} ${HEADER_FILES} ${SOURCE_FILES} )
+add_library( glfx_static STATIC ${GRAMMAR_FILES} ${HEADER_FILES} ${SOURCE_FILES} )
 
 IF(WIN32)
-target_link_libraries( glfx
-"glew32")
-add_definitions( -DWIN32 )
+target_link_libraries( glfx "glew32")
+set_target_properties( glfx PROPERTIES COMPILE_FLAGS "-DWIN32 -DUNICODE -D_UNICODE" )
+set_target_properties( glfx_static PROPERTIES COMPILE_FLAGS "-DWIN32 -DUNICODE -D_UNICODE -DGLEW_STATIC" )
 ELSEIF(UNIX)
-target_link_libraries( glfx
-"GL"
-"GLEW")
-add_definitions( -DLINUX )
+target_link_libraries( glfx "GL" "GLEW")
+set_target_properties( glfx PROPERTIES COMPILE_FLAGS "-DLINUX -DUNICODE -D_UNICODE" )
+set_target_properties( glfx_static PROPERTIES COMPILE_FLAGS "-DLINUX -DUNICODE -D_UNICODE -DGLEW_STATIC" )
 ENDIF(WIN32)
-
-set_target_properties( glfx PROPERTIES LINK_INTERFACE_LIBRARIES "" )

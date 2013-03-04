@@ -31,7 +31,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include <cassert>
 
 #ifdef WIN32
-#define GLEW_STATIC
 #include "gl/glew.h"
 #else
 #include "GL/glew.h"
@@ -310,7 +309,8 @@ string Sampler::Descriptor() const
 {
     ostringstream dcl;
     bool isBuffer=false;
-    const string& format=m_stringParams.at("Format");
+
+	const string& format = m_stringParams.find("Format")->second;
 
     if(format=="int")
         dcl<<'i';
@@ -319,12 +319,12 @@ string Sampler::Descriptor() const
     else if(format!="float")
         throw "Unknown format type\n";
 
-    dcl<<m_stringParams.at("Type");
+    dcl<<m_stringParams.find("Type")->second;
 
-    if(m_intParams.at("Dim"))
-        dcl<<m_intParams.at("Dim")<<'D';
+    if(m_intParams.find("Dim")->second)
+        dcl<<m_intParams.find("Dim")->second<<'D';
     else {
-        string dim(m_stringParams.at("Dim"));
+        string dim(m_stringParams.find("Dim")->second);
         dcl<<dim;
         if(dim=="Buffer")
             isBuffer=true;
@@ -332,30 +332,30 @@ string Sampler::Descriptor() const
             throw "Unknown type of sampler dimension\n";
     }
 
-    if(m_intParams.at("Rect")) {
-        if(m_intParams.at("Dim")!=2 || !m_intParams.at("Array") || !m_intParams.at("MS"))
+    if(m_intParams.find("Rect")->second) {
+        if(m_intParams.find("Dim")->second!=2 || !m_intParams.find("Array")->second || !m_intParams.find("MS")->second)
             throw "Can't use Rect with current parameters\n";
         dcl<<"Rect";
     }
 
-    if(m_intParams.at("MS")) {
-        if(m_intParams.at("Dim")!=2)
+    if(m_intParams.find("MS")->second) {
+        if(m_intParams.find("Dim")->second!=2)
             throw "Can't use MS with dimension other than 2\n";
         dcl<<"MS";
     }
 
-    if(m_intParams.at("Array")) {
-        if(m_intParams.at("Dim")==3 || isBuffer)
+    if(m_intParams.find("Array")->second) {
+        if(m_intParams.find("Dim")->second==3 || isBuffer)
             throw "Can't use Array with dimension 3 or buffer\n";
         dcl<<"Array";
     }
 
-    if(m_stringParams.at("CmpMode")=="ref") {
+    if(m_stringParams.find("CmpMode")->second=="ref") {
         if(isBuffer)
             throw "Can't use comparison with buffer\n";
         dcl<<"Shadow";
     }
-    else if(m_stringParams.at("CmpMode")!="none")
+    else if(m_stringParams.find("CmpMode")->second!="none")
         throw "Unknown compare mode\n";
 
     return dcl.str();
@@ -365,17 +365,17 @@ unsigned Sampler::CreateSamplerObject() const
 {
     GLuint samplerObj;
     glGenSamplers(1, &samplerObj);
-    glSamplerParameteri(samplerObj, GL_TEXTURE_MIN_FILTER, m_minFilters.at(m_stringParams.at("MinFilter")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_MAG_FILTER, m_magFilters.at(m_stringParams.at("MagFilter")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_S, m_wrapModes.at(m_stringParams.at("WrapS")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_T, m_wrapModes.at(m_stringParams.at("WrapT")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_R, m_wrapModes.at(m_stringParams.at("WrapR")));
-    glSamplerParameterf(samplerObj, GL_TEXTURE_MIN_LOD, m_floatParams.at("MinLod"));
-    glSamplerParameterf(samplerObj, GL_TEXTURE_MAX_LOD, m_floatParams.at("MaxLod"));
-    glSamplerParameterf(samplerObj, GL_TEXTURE_LOD_BIAS, m_floatParams.at("LodBias"));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_COMPARE_MODE, m_cmpModes.at(m_stringParams.at("CmpMode")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_COMPARE_FUNC, m_compareFuncs.at(m_stringParams.at("CmpFunc")));
-    glSamplerParameteri(samplerObj, GL_TEXTURE_MAX_ANISOTROPY_EXT, m_intParams.at("Aniso"));
+    glSamplerParameteri(samplerObj, GL_TEXTURE_MIN_FILTER, m_minFilters.find(m_stringParams.find("MinFilter")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_MAG_FILTER, m_magFilters.find(m_stringParams.find("MagFilter")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_S, m_wrapModes.find(m_stringParams.find("WrapS")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_T, m_wrapModes.find(m_stringParams.find("WrapT")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_WRAP_R, m_wrapModes.find(m_stringParams.find("WrapR")->second)->second);
+    glSamplerParameterf(samplerObj, GL_TEXTURE_MIN_LOD, m_floatParams.find("MinLod")->second);
+    glSamplerParameterf(samplerObj, GL_TEXTURE_MAX_LOD, m_floatParams.find("MaxLod")->second);
+    glSamplerParameterf(samplerObj, GL_TEXTURE_LOD_BIAS, m_floatParams.find("LodBias")->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_COMPARE_MODE, m_cmpModes.find(m_stringParams.find("CmpMode")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_COMPARE_FUNC, m_compareFuncs.find(m_stringParams.find("CmpFunc")->second)->second);
+    glSamplerParameteri(samplerObj, GL_TEXTURE_MAX_ANISOTROPY_EXT, m_intParams.find("Aniso")->second);
 
     return samplerObj;
 }
