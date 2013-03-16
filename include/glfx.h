@@ -25,10 +25,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 
 #pragma once
 
-#ifdef _WIN32
-#  define DLLEXPORT __declspec( dllexport )
+#if defined(__MINGW32__) || defined(__CYGWIN__)
+#   define GLFX_APIENTRY __stdcall
+#elif (_MSC_VER >= 800)
+#   define GLFX_APIENTRY __stdcall
 #else
-#  define DLLEXPORT
+#   define GLFX_APIENTRY
+#endif
+
+#ifndef GLFX_STATIC
+#   ifdef GLFX_BUILD
+#       ifdef _MSC_VER
+#           define GLFXAPI extern __declspec(dllexport)
+#       else
+#           define GLFXAPI __attribute__((__visibility__("default")))
+#       endif
+#   else
+#       ifdef _MSC_VER
+#           define GLFXAPI extern __declspec(dllimport)
+#       else
+#           define GLFXAPI
+#       endif
+#   endif
+#else
+#   define GLFXAPI extern
 #endif
 
 extern "C" {
@@ -37,7 +57,7 @@ extern "C" {
 * glfxGenEffect
 * Return value: Effect id
 **************************************************/
-int DLLEXPORT glfxGenEffect();
+GLFXAPI int GLFX_APIENTRY glfxGenEffect();
 
 /**************************************************
 * glfxCreateEffectFromFile
@@ -46,7 +66,7 @@ int DLLEXPORT glfxGenEffect();
 *   file    -- File name
 * Return value: Status
 **************************************************/
-bool DLLEXPORT glfxParseEffectFromFile( int effect, const char* file );
+GLFXAPI bool GLFX_APIENTRY glfxParseEffectFromFile( int effect, const char* file );
 
 /**************************************************
 * glfxCreateEffectFromMemory
@@ -55,7 +75,7 @@ bool DLLEXPORT glfxParseEffectFromFile( int effect, const char* file );
 *   src    -- Source
 * Return value: Status
 **************************************************/
-bool DLLEXPORT glfxParseEffectFromMemory( int effect, const char* src );
+GLFXAPI bool GLFX_APIENTRY glfxParseEffectFromMemory( int effect, const char* src );
 
 /**************************************************
 * glfxCompileProgram
@@ -64,13 +84,13 @@ bool DLLEXPORT glfxParseEffectFromMemory( int effect, const char* src );
 *   program -- Program name
 * Return value: GL program id if success, -1 otherwise
 **************************************************/
-int DLLEXPORT glfxCompileProgram(int effect, const char* program);
+GLFXAPI int GLFX_APIENTRY glfxCompileProgram(int effect, const char* program);
 
 /**************************************************
 * glfxGetProgramCount
 * Return value: Number of programs
 **************************************************/
-int DLLEXPORT glfxGetProgramCount(int effect);
+GLFXAPI int GLFX_APIENTRY glfxGetProgramCount(int effect);
 
 /**************************************************
 * glfxGetProgramName
@@ -80,7 +100,7 @@ int DLLEXPORT glfxGetProgramCount(int effect);
 *   name    -- Destination address
 *   bufSize -- Size of the buffer
 **************************************************/
-void DLLEXPORT glfxGetProgramName(int effect, int program, char* name, int bufSize);
+GLFXAPI void GLFX_APIENTRY glfxGetProgramName(int effect, int program, char* name, int bufSize);
 
 /**************************************************
 * glfxGenerateSampler
@@ -89,7 +109,7 @@ void DLLEXPORT glfxGetProgramName(int effect, int program, char* name, int bufSi
 *   sampler -- Sampler name
 * Return value: GL sampler id if success, -1 otherwise
 **************************************************/
-int DLLEXPORT glfxGenerateSampler(int effect, const char* sampler);
+GLFXAPI int GLFX_APIENTRY glfxGenerateSampler(int effect, const char* sampler);
 
 /**************************************************
 * glfxGetEffectLog
@@ -98,27 +118,19 @@ int DLLEXPORT glfxGenerateSampler(int effect, const char* sampler);
 *   log     -- Destination address
 *   bufSize -- Size of the buffer
 **************************************************/
-void DLLEXPORT glfxGetEffectLog(int effect, char* log, int bufSize);
+GLFXAPI void GLFX_APIENTRY glfxGetEffectLog(int effect, char* log, int bufSize);
+
 
 /**************************************************
 * glfxDeleteEffect
 * Input:
 *   effect  -- GLFX effect id
 **************************************************/
-void DLLEXPORT glfxDeleteEffect(int effect);
+GLFXAPI void GLFX_APIENTRY glfxDeleteEffect(int effect);
 
 }
 
 #ifdef __cplusplus
-
-#include <string>
-/**************************************************
-* glfxGetEffectLog
-* Input:
-*   effect  -- GLFX effect id
-* Return value: Log string
-**************************************************/
-std::string DLLEXPORT glfxGetEffectLog(int effect);
 
 /**************************************************
 * glfxGetProgramName
@@ -126,6 +138,14 @@ std::string DLLEXPORT glfxGetEffectLog(int effect);
 *   effect  -- GLFX effect id
 *   program -- Index of program
 **************************************************/
-std::string DLLEXPORT glfxGetProgramName(int effect, int program);
+GLFXAPI const char* GLFX_APIENTRY glfxGetProgramName(int effect, int program);
+
+/**************************************************
+* glfxGetEffectLog
+* Input:
+*   effect  -- GLFX effect id
+* Return value: Log string
+**************************************************/
+GLFXAPI const char* GLFX_APIENTRY glfxGetEffectLog(int effect);
 
 #endif

@@ -30,13 +30,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #include <cstdio>
 #include <cassert>
 
-#ifdef WIN32
-#include "gl/glew.h"
-#else
-#include "GL/glew.h"
+#ifndef _MSC_VER
 typedef int errno_t;
 #include <errno.h>
 #endif
+
+#include "GL/glew.h"
 
 // workaround for Linux distributions that haven't yet upgraded to GLEW 1.9
 #ifndef GL_COMPUTE_SHADER
@@ -56,7 +55,7 @@ using namespace std;
 
 namespace glfxParser {
 
-#ifdef LINUX
+#ifndef _MSC_VER
 
 errno_t strcpy_s(char* dst, size_t size, const char* src)
 {
@@ -386,13 +385,13 @@ vector<Effect*> gEffects;
 
 using namespace glfxParser;
 
-int glfxGenEffect()
+int GLFX_APIENTRY glfxGenEffect()
 {
     gEffects.push_back(new Effect);
     return (int)gEffects.size()-1;
 }
 
-bool glfxParseEffectFromFile( int effect, const char* file )
+bool GLFX_APIENTRY glfxParseEffectFromFile( int effect, const char* file )
 {
     bool retVal=true;
     
@@ -439,7 +438,7 @@ bool glfxParseEffectFromFile( int effect, const char* file )
     return retVal;
 }
 
-bool glfxParseEffectFromMemory( int effect, const char* src )
+bool GLFX_APIENTRY glfxParseEffectFromMemory( int effect, const char* src )
 {
     bool retVal=true;
     try {
@@ -471,7 +470,7 @@ bool glfxParseEffectFromMemory( int effect, const char* src )
     return retVal;
 }
 
-void glfxDeleteEffect(int effect)
+void GLFX_APIENTRY glfxDeleteEffect(int effect)
 {
     if((size_t)effect<gEffects.size() && gEffects[effect]!=NULL) {
         if(gEffect==gEffects[effect])
@@ -481,7 +480,7 @@ void glfxDeleteEffect(int effect)
     }
 }
 
-void glfxGetEffectLog(int effect, char* log, int bufSize)
+void GLFX_APIENTRY glfxGetEffectLog(int effect, char* log, int bufSize)
 {
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL)
         return;
@@ -490,22 +489,22 @@ void glfxGetEffectLog(int effect, char* log, int bufSize)
         gEffects[effect]->Log().str("");
 }
 
-string glfxGetEffectLog(int effect)
+const char* GLFX_APIENTRY glfxGetEffectLog(int effect)
 {
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL)
         return "";
 
     string log=gEffects[effect]->Log().str();
     gEffects[effect]->Log().str("");
-    return log;
+    return log.c_str();
 }
 
-int glfxGetProgramCount(int effect)
+int GLFX_APIENTRY glfxGetProgramCount(int effect)
 {
     return (int)gEffects[effect]->GetProgramList().size();
 }
 
-void glfxGetProgramName(int effect, int program, char* name, int bufSize)
+void GLFX_APIENTRY glfxGetProgramName(int effect, int program, char* name, int bufSize)
 {
     const vector<string>& tmpList = gEffects[effect]->GetProgramList();
     if(program > (int)tmpList.size())
@@ -513,15 +512,15 @@ void glfxGetProgramName(int effect, int program, char* name, int bufSize)
     strcpy_s(name, bufSize, tmpList[program].c_str());
 }
 
-string glfxGetProgramName(int effect, int program)
+const char* GLFX_APIENTRY glfxGetProgramName(int effect, int program)
 {
     const vector<string>& tmpList = gEffects[effect]->GetProgramList();
     if(program > (int)tmpList.size())
-        return string();
-    return tmpList[program];
+        return "";
+    return tmpList[program].c_str();
 }
 
-int glfxCompileProgram(int effect, const char* program)
+int GLFX_APIENTRY glfxCompileProgram(int effect, const char* program)
 {
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL || program==NULL || !gEffects[effect]->Active())
         return -1;
@@ -549,7 +548,7 @@ int glfxCompileProgram(int effect, const char* program)
     return progid;
 }
 
-int glfxGenerateSampler(int effect, const char* sampler)
+int GLFX_APIENTRY glfxGenerateSampler(int effect, const char* sampler)
 {
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL || sampler==NULL || !gEffects[effect]->Active())
         return -1;
