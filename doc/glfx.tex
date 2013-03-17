@@ -24,10 +24,10 @@
 \parskip .3cm
 
 \fxsetup{
-    status=draft,
+    status=final,
     author={TODO},
-    layout=inline, % also try inline, footnote or pdfnote
-    theme=color
+    layout=inline % also try inline, footnote or pdfnote
+%    theme=color
 }
 
 % Fonts
@@ -251,9 +251,9 @@ string and \texttt{\textbf{bufSize}} is the maximum size of the string.
 
 Another, C++ API, is exposed as well:
 \begin{lstlisting}
-std::string glfxGetProgramName(int effect, int programIndex);
+const char* glfxGetProgramName(int effect, int programIndex);
 \end{lstlisting}
-Which returns a \texttt{\textbf{std::string}} object.
+Which returns a null terminated string that has temporary life-span.
 
 \subsection{Handling errors}
 The log is accumulated until retrieved by any of the APIs.
@@ -267,9 +267,9 @@ string and \texttt{\textbf{bufSize}} is the maximum size of the string.
 
 Alternatively, if C++ is used, a simpler API call is available:
 \begin{lstlisting}
-std::string glfxGetEffectLog(int effect);
+const char* glfxGetEffectLog(int effect);
 \end{lstlisting}
-Which returns a \texttt{\textbf{std::string}} object.
+Which returns a null terminated string that has temporary life-span.
 
 Currently there are three types of errors:
 \begin{enumerate}
