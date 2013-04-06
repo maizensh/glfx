@@ -175,8 +175,26 @@ These shortcomings will be addressed in future releases.
 If you're familiar with GLSL, using GLFX should be a straightforward procedure. If you're familiar
 with HLSL, you'll see similar ideas to what was used in Microsoft's effects package.
 
+\subsection{Dependencies}
+GLFX depends on GLEW (currently 1.9.0).
+Static GLFX can use either static or shared GLEW, while shared GLFX is restricted to shared GLEW.
+
+\subsection{Building from source}
+For Windows currently we supply VS2012 solution files. These files are also compatible with VS2010,
+however the \texttt{\textbf{Platform Toolset}} property should be set to \texttt{\textbf{vs100}} manually.
+\\For all other platforms and build environments CMake scripts are provided.
+
 \pagebreak
 \section{The GLFX API}
+
+\subsection{Including the API}
+All the exposed API is located in a single header file. Assuming that the header was installed
+into the global OpenGL include directory then you can start using it by:
+\begin{lstlisting}
+#include <GL/glfx.h>
+\end{lstlisting}
+This is for shared GLFX. For the static one you need to define the macro \texttt{\textbf{GLFX\_STATIC}}
+before including the header.
 
 \subsection{Manipulating effect objects}
 Effect objects are associated with effect files (which will be discussed in \autoref{sec:effFiles})
