@@ -63,7 +63,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\glfx.h" />
+    <ClInclude Include="include\gl\glfx.h" />
     <ClInclude Include="src\glfxClasses.h" />
     <ClInclude Include="src\glfxLALRParser.hpp" />
     <ClInclude Include="src\glfxParser.h" />

@@ -37,7 +37,7 @@
     <ClInclude Include="src\glfxScanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\glfx.h">
+    <ClInclude Include="include\gl\glfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

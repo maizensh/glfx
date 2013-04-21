@@ -26,9 +26,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. */
 #pragma once
 
 #if defined(__MINGW32__) || defined(__CYGWIN__)
-#   define GLFX_APIENTRY __stdcall
+#   define GLFX_APIENTRY __cdecl
 #elif (_MSC_VER >= 800)
-#   define GLFX_APIENTRY __stdcall
+#   define GLFX_APIENTRY __cdecl
 #else
 #   define GLFX_APIENTRY
 #endif

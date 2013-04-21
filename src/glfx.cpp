@@ -42,7 +42,7 @@ typedef int errno_t;
 #define GL_COMPUTE_SHADER 0x91B9
 #endif
 
-#include "glfx.h"
+#include "gl/glfx.h"
 #include "glfxClasses.h"
 #include "glfxParser.h"
 
