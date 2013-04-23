@@ -9,7 +9,7 @@ FILE( GLOB GRAMMAR_FILES
 SOURCE_GROUP( "Grammar Files" FILES ${GRAMMAR_FILES} )
 
 FILE( GLOB HEADER_FILES
-"../include/glfx.h"
+"../include/gl/glfx.h"
 "glfxClasses.h"
 "glfxParser.h"
 "glfxScanner.h"
