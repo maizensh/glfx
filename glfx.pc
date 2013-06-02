@@ -3,4 +3,4 @@ Description: OpenGL Effect Library
 Requires:
 Version: 0.7.0
 Libs: -L/usr/local/lib -lglfx
-Cflags:
+Cflags: -I/usr/local/include/GL
