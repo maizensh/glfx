@@ -4,8 +4,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
 set(GLFX_VERSION 0.7.0)
 
-add_subdirectory(src)
-
 SET (LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)" )
 SET (LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING "Library directory name")
 ## the following are directories where stuff will be installed to
@@ -15,3 +13,5 @@ IF(NOT WIN32)
   CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/glfx.pc.cmake ${CMAKE_CURRENT_BINARY_DIR}/glfx.pc @ONLY)
   INSTALL( FILES ${CMAKE_CURRENT_BINARY_DIR}/glfx.pc DESTINATION ${PKGCONFIG_INSTALL_PREFIX})
 ENDIF(NOT WIN32)
+
+add_subdirectory(src)
