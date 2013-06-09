@@ -494,7 +494,7 @@ const char* GLFX_APIENTRY glfxGetEffectLog(int effect)
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL)
         return "";
 
-    string log=gEffects[effect]->Log().str();
+    static string log=gEffects[effect]->Log().str();
     gEffects[effect]->Log().str("");
     return log.c_str();
 }
