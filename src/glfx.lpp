@@ -76,6 +76,7 @@ FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 {NUM_BLCK}                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=atoi(yytext); return NUM;}
 {FLOAT_BLCK}                                    if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.fnum=(float)atof(yytext); return FLOAT;}
 "in"|"out"                                      if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return STORAGEQ;}
+"gl_FragDepth"                                  if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return GL_FRAGDEPTH;}
 "true"                                          if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=1; return NUM;}
 "false"                                         if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.num=0; return NUM;}
 {ID_BLCK}                                       if(gLexPassthrough) gEffect->m_sharedCode<<yytext; else {glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return IDENTIFIER;}

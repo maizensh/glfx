@@ -309,7 +309,7 @@ string Sampler::Descriptor() const
     ostringstream dcl;
     bool isBuffer=false;
 
-	const string& format = m_stringParams.find("Format")->second;
+    const string& format = m_stringParams.find("Format")->second;
 
     if(format=="int")
         dcl<<'i';

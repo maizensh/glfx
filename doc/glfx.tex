@@ -400,6 +400,15 @@ stages MyGeometry {
 };
 \end{lstlisting}
 
+For fragment shaders it's possible to redeclare \texttt{\textbf{gl\_FragDepth}}, as according to the
+GLSL specification. The syntax in GLFX is as follows:
+\begin{lstlisting}
+stages MyFragment {
+	fs(430)=MyFS()
+	: gl_FragDepth(depth_greater);
+};
+\end{lstlisting}
+
 \pagebreak
 \section{Headers}
 GLFX has a preliminary support for header files with. The usage is just like in C++ source

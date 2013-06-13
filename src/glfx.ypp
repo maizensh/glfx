@@ -31,7 +31,7 @@
     static void errSem(const string& str, int line=-1);
 %}
 
-%token 	SHADER PROGRAM INTERFACE IDENTIFIER STORAGEQ STORAGET SHADER_TYPE
+%token 	SHADER PROGRAM INTERFACE IDENTIFIER STORAGEQ GL_FRAGDEPTH STORAGET SHADER_TYPE
 %token	LP RP LB RB SC COMMA COLON EQUALS NUM INCLUDE SAMPLER FLOAT EMPTY_ARRAY_BRACKETS
 
 %%
@@ -361,6 +361,14 @@ layout : STORAGEQ read_parenthesis {
     ostringstream layoutDef;
     layoutDef<<"#line "<<$1.lineno<<endl;
     layoutDef<<"layout"<<$2.strs[0]<<' '<<$1.strs[0]<<';'<<endl;
+    $$.strs[0]=layoutDef.str();
+}
+;
+
+layout : GL_FRAGDEPTH read_parenthesis {
+    ostringstream layoutDef;
+    layoutDef<<"#line "<<$1.lineno<<endl;
+    layoutDef<<"layout"<<$2.strs[0]<<' '<<"out float "<<$1.strs[0]<<';'<<endl;
     $$.strs[0]=layoutDef.str();
 }
 ;
