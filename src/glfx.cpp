@@ -489,14 +489,15 @@ void GLFX_APIENTRY glfxGetEffectLog(int effect, char* log, int bufSize)
         gEffects[effect]->Log().str("");
 }
 
+static string gLog;
 const char* GLFX_APIENTRY glfxGetEffectLog(int effect)
 {
     if((size_t)effect>=gEffects.size() || gEffects[effect]==NULL)
         return "";
 
-    static string log=gEffects[effect]->Log().str();
+    gLog=gEffects[effect]->Log().str();
     gEffects[effect]->Log().str("");
-    return log.c_str();
+    return gLog.c_str();
 }
 
 int GLFX_APIENTRY glfxGetProgramCount(int effect)
