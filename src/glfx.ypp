@@ -96,18 +96,19 @@ tok : INTERFACE lex_fx IDENTIFIER read_block SC lex_passthrough {
     delete[] includeStr;
 }
     | SAMPLER lex_fx samplerClass LB samplerParamList RB samplerVars SC lex_passthrough {
-    $5.samp->SetParam("Type", $1.strs[0]);
-    string dcl=$5.samp->Descriptor();
+    Sampler* samp=$5.samp;
+    samp->SetParam("Type", $1.strs[0]);
+    string dcl=samp->Descriptor();
     if(dcl.size() == 0)
         errSem("No sampler declaration can be generated", $1.lineno);
     if($3.strs[0].size()>0)
-        gEffect->m_samplers[$3.strs[0]]=new Sampler(*$5.samp);
+        gEffect->m_samplers[$3.strs[0]]=new Sampler(*samp);
     for(vector<YYSTYPE::samplerVar>::const_iterator it=$7.texNames->begin(); it!=$7.texNames->end(); ++it) {
         gEffect->m_sharedCode<<"#line "<<$1.lineno<<endl;
         gEffect->m_sharedCode<<it->binding<<" uniform "<<dcl<<' '<<it->name<<';'<<endl;
-        gEffect->m_samplers[it->name]=new Sampler(*$5.samp);
+        gEffect->m_samplers[it->name]=new Sampler(*samp);
     }
-    delete $5.samp;
+    delete samp;
     delete $7.texNames;
     gEffect->m_sharedCode<<"#line "<<glfxget_lineno()<<endl;
 }

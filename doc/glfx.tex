@@ -123,7 +123,7 @@ uniform,mat4,program,vs,fs,stages,sampler},
 \newcommand{\tr}{\operatorname{tr}}
 
 \begin{document}
-\title{GLFX 0.7}
+\title{GLFX 0.75}
 \author{Max Eisenstein\\Etay Meiri\\Steven Batchelor}
 \date{\today}
 \maketitle
@@ -462,10 +462,6 @@ Sampler's name is used by the API to retrieve the sampler. Texture names are use
 as regular texture units with the specified binding points.
 State values determine the sampler and the texture units.
 
-\subsection{Images}
-In order to use images, just replace the \texttt{\textbf{sampler}} keyword with \texttt{\textbf{image}}
-keyword.
-
 \subsection{Selecting the texture type}
 The type of the texture can be anything that is defined in the GLSL spec and is specified with
 the following state values:
@@ -554,6 +550,13 @@ lequal, gequal, less, greater, equal, notequal, always, never & lequal\\
 \caption{Comparison sampling state}
 \label{tab:compModes}
 \end{table}
+
+\pagebreak
+\section{Issues}
+\begin{enumerate}
+\item Using defined constants in program layout definition currently doesn't work, because
+of wrong placement in the generated glsl source.
+\end{enumerate}
 
 
 \end{document}

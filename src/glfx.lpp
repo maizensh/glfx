@@ -57,7 +57,7 @@ FLOAT_BLCK [0-9]*((\.[0-9])|([0-9]\.))[0-9]*
 "stages"                                        glfxlval.boolean=true; return PROGRAM;
 "shader"                                        glfxlval.lineno=yylineno; return SHADER;
 "interface"                                     glfxlval.lineno=yylineno; return INTERFACE;
-"sampler"|"image"                               glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return SAMPLER;
+"sampler"                                       glfxlval.lineno=yylineno; glfxlval.strs[0]=yytext; return SAMPLER;
 ^"#include"[\t ]+{STR_BLCK}[\t ]*\n             {
                                                     string tmp(yytext);
                                                     size_t firstLoc=tmp.find('"')+1;
