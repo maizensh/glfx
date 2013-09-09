@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT(glfx, 0.70, etay.meiri@gmail.com)
+AC_INIT(glfx, 0.75, etay.meiri@gmail.com)
 dnl Must come before AM_INIT_AUTOMAKE.
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([readme-alpha dist-xz -Wall])

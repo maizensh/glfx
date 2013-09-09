@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.7)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/modules")
 
-set(GLFX_VERSION 0.7.0)
+set(GLFX_VERSION 0.7.5)
 
 SET (LIB_SUFFIX "" CACHE STRING "Define suffix of directory name (32/64)" )
 SET (LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING "Library directory name")
